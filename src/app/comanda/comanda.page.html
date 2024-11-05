@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Iniciar Comanda</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Número da Comanda</ion-label>
+    <ion-input type="number" [(ngModel)]="comanda"></ion-input>
+  </ion-item>
+  <ion-button expand="full" color="primary" (click)="iniciarComanda()">
+    Iniciar Comanda
+  </ion-button>
+</ion-content>
