@@ -38,3 +38,7 @@ android/
 
 # Arquivos de cache
 .cache/
+.angular
+.angular/*
+.Angular
+.Angular/*

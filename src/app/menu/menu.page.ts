@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { ProdutosService } from '../services/produtos.service';
 
 @Component({
   selector: 'app-menu',
@@ -10,16 +10,15 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MenuPage implements OnInit {
   produtos: any[] = [];
-  comanda: number | undefined; // Permite que comanda seja undefined inicialmente
+  comanda: number | undefined;
 
   constructor(
-    private http: HttpClient,
+    private produtosService: ProdutosService,
     private alertController: AlertController,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    // Obtém o número da comanda da navegação anterior usando ActivatedRoute
     this.route.queryParams.subscribe(params => {
       if (params && params['comanda']) {
         this.comanda = +params['comanda'];
@@ -29,7 +28,7 @@ export class MenuPage implements OnInit {
   }
 
   carregarProdutos() {
-    this.http.get<any>('http://localhost:3000/produtos').subscribe(
+    this.produtosService.getProdutos().subscribe(
       (data: any) => {
         this.produtos = data;
       },
@@ -40,12 +39,9 @@ export class MenuPage implements OnInit {
   }
 
   adicionarAoPedido(produto: any) {
-    if (this.comanda) { // Verifica se comanda está definida antes de fazer a requisição
+    if (this.comanda) {
       console.log('Produto adicionado:', produto);
-      this.http.post('http://localhost:3000/pedidos', {
-        comanda: this.comanda,
-        produtoId: produto.id
-      }).subscribe(
+      this.produtosService.adicionarPedido(this.comanda, produto.id).subscribe(
         () => console.log('Pedido salvo com sucesso'),
         (error) => console.error('Erro ao salvar pedido:', error)
       );
