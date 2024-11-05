@@ -7,14 +7,27 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let produto of produtos">
-      <ion-label>
-        <h2>{{ produto.nome }}</h2>
-        <p>R$ {{ produto.preco.toFixed(2) }}</p>
-      </ion-label>
-      <ion-button slot="end" (click)="adicionarAoCarrinho(produto)">
-        Adicionar ao Carrinho
-      </ion-button>
-    </ion-item>
+    <div *ngFor="let categoria of categorias">
+      <ion-item (click)="toggleCategoria(categoria.id)" class="categoria-header">
+        <ion-label>{{ categoria.nome }}</ion-label>
+        <ion-icon 
+          slot="end" 
+          [name]="isExpanded(categoria.id) ? 'chevron-up' : 'chevron-down'">
+        </ion-icon>
+      </ion-item>
+
+      <div *ngIf="isExpanded(categoria.id)">
+        <ion-item *ngFor="let produto of produtosPorCategoria[categoria.id]">
+          <ion-label>
+            <h2>{{ produto.nome }}</h2>
+            <p *ngIf="produto.descricao">{{ produto.descricao }}</p>
+            <p class="preco">R$ {{ produto.preco?.toFixed(2) }}</p>
+          </ion-label>
+          <ion-button slot="end" (click)="adicionarAoCarrinho(produto)">
+            ADICIONAR AO CARRINHO
+          </ion-button>
+        </ion-item>
+      </div>
+    </div>
   </ion-list>
 </ion-content>

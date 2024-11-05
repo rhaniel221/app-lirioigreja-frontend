@@ -11,16 +11,21 @@ export class ComandaService {
 
   constructor(private http: HttpClient) {}
 
-  async registrarComanda(numeroComanda: string) {
+  async registrarComanda(numero: string) {
     return firstValueFrom(
-      this.http.post(`${this.apiUrl}/comandas`, { numeroComanda })
+      this.http.post(`${this.apiUrl}/comandas`, { numero })
     );
   }
 
-  async getPedidosComanda(numeroComanda: string): Promise<any[]> {
-    const response = await firstValueFrom(
-      this.http.get<any[]>(`${this.apiUrl}/comandas/${numeroComanda}/pedidos`)
+  async consultarComanda(comandaId: string): Promise<any[]> {
+    return firstValueFrom(
+      this.http.get<any[]>(`${this.apiUrl}/consultar-comanda?comanda_id=${comandaId}`)
     );
-    return response || [];
+  }
+
+  async getPedidosComanda(comandaId: string): Promise<any[]> {
+    return firstValueFrom(
+      this.http.get<any[]>(`${this.apiUrl}/carrinho?comanda_id=${comandaId}`)
+    );
   }
 }

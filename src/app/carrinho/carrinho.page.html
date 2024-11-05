@@ -10,14 +10,20 @@
     <ion-item *ngFor="let item of itensCarrinho">
       <ion-label>
         <h2>{{ item.nome }}</h2>
-        <p>R$ {{ item.preco.toFixed(2) }}</p>
+        <p *ngIf="item.descricao">{{ item.descricao }}</p>
+        <p>R$ {{ item.preco?.toFixed(2) }}</p>
       </ion-label>
-      <ion-button slot="end" color="danger" (click)="removerItem(item)">
-        Remover
+      <ion-button color="danger" slot="end" (click)="removerDoCarrinho(item)">
+        REMOVER
       </ion-button>
     </ion-item>
   </ion-list>
-  <ion-button expand="block" (click)="finalizarPedido()">
-    Finalizar Pedido
+
+  <ion-button 
+    expand="full" 
+    class="ion-padding"
+    (click)="finalizarPedido()"
+    [disabled]="itensCarrinho.length === 0">
+    FINALIZAR PEDIDO
   </ion-button>
 </ion-content>

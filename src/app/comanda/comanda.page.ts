@@ -19,7 +19,7 @@ export class ComandaPage {
 
   async carregarComanda() {
     try {
-      this.numeroComanda = localStorage.getItem('numeroComanda') || '';
+      this.numeroComanda = localStorage.getItem('comandaId') || '';
       if (this.numeroComanda) {
         this.pedidos = await this.comandaService.getPedidosComanda(this.numeroComanda);
       }

@@ -1,0 +1,21 @@
+// src/app/carrinho/carrinho.page.scss
+ion-item {
+    --background: transparent;
+    
+    ion-label {
+      h2 {
+        color: var(--ion-color-light);
+        font-size: 16px;
+        font-weight: 500;
+      }
+  
+      p {
+        color: var(--ion-color-medium-shade);
+        font-size: 14px;
+      }
+    }
+  }
+  
+  ion-button[expand="full"] {
+    margin: 16px;
+  }
