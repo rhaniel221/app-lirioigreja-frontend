@@ -1,15 +1,17 @@
+<!-- src/app/comanda/comanda.page.html -->
 <ion-header>
   <ion-toolbar>
-    <ion-title>Iniciar Comanda</ion-title>
+    <ion-title>Comanda {{ numeroComanda }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Número da Comanda</ion-label>
-    <ion-input type="number" [(ngModel)]="comanda"></ion-input>
-  </ion-item>
-  <ion-button expand="full" color="primary" (click)="iniciarComanda()">
-    Iniciar Comanda
-  </ion-button>
+  <ion-list>
+    <ion-item *ngFor="let pedido of pedidos">
+      <ion-label>
+        <h2>{{ pedido.nome }}</h2>
+        <p>R$ {{ pedido.preco.toFixed(2) }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

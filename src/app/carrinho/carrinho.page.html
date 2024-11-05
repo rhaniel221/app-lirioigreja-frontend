@@ -1,0 +1,23 @@
+<!-- src/app/carrinho/carrinho.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Carrinho</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of itensCarrinho">
+      <ion-label>
+        <h2>{{ item.nome }}</h2>
+        <p>R$ {{ item.preco.toFixed(2) }}</p>
+      </ion-label>
+      <ion-button slot="end" color="danger" (click)="removerItem(item)">
+        Remover
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" (click)="finalizarPedido()">
+    Finalizar Pedido
+  </ion-button>
+</ion-content>

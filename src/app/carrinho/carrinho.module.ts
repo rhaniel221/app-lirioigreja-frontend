@@ -1,17 +1,17 @@
-// src/app/tabs/tabs.module.ts
+// src/app/carrinho/carrinho.module.ts
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { TabsPageRoutingModule } from './tabs-routing.module';
-import { TabsPage } from './tabs.page';
+import { CarrinhoPageRoutingModule } from './carrinho-routing.module';
+import { CarrinhoPage } from './carrinho.page';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
-    TabsPageRoutingModule
+    CarrinhoPageRoutingModule
   ],
-  declarations: [TabsPage],
+  declarations: [CarrinhoPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class TabsModule {}
+export class CarrinhoModule {}

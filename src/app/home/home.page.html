@@ -1,13 +1,16 @@
-<ion-header [translucent]="true">
+<!-- src/app/home/home.page.html -->
+<ion-header>
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Início</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Número da Comanda</ion-label>
+    <ion-input [(ngModel)]="numeroComanda" type="number"></ion-input>
+  </ion-item>
+  <ion-button expand="block" (click)="registrarComanda()">
+    REGISTRAR COMANDA
+  </ion-button>
 </ion-content>

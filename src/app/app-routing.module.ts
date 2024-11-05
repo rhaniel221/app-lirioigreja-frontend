@@ -1,20 +1,12 @@
+// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./comanda/comanda.module').then(m => m.ComandaPageModule) // Define comanda como página inicial
-  },
-  {
-    path: 'menu',
-    loadChildren: () => import('./menu/menu.module').then(m => m.MenuPageModule)
-  },  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-
-  // Outras rotas, se houver
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsModule)
+  }
 ];
 
 @NgModule({

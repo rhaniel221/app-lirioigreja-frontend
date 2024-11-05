@@ -1,3 +1,4 @@
+<!-- src/app/menu/menu.page.html -->
 <ion-header>
   <ion-toolbar>
     <ion-title>Menu</ion-title>
@@ -9,12 +10,11 @@
     <ion-item *ngFor="let produto of produtos">
       <ion-label>
         <h2>{{ produto.nome }}</h2>
-        <p>{{ produto.descricao }}</p>
-        <p>Preço: R$ {{ produto.preco }}</p>
+        <p>R$ {{ produto.preco.toFixed(2) }}</p>
       </ion-label>
-      <ion-button (click)="adicionarAoPedido(produto)" slot="end">Adicionar</ion-button>
+      <ion-button slot="end" (click)="adicionarAoCarrinho(produto)">
+        Adicionar ao Carrinho
+      </ion-button>
     </ion-item>
   </ion-list>
-
-  <ion-button expand="full" color="success" (click)="finalizarPedido()">Finalizar Pedido</ion-button>
 </ion-content>
