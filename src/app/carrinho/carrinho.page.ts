@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProdutosService } from '../services/produtos.service';
+import { ToastController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-carrinho',
@@ -10,10 +11,13 @@ import { ProdutosService } from '../services/produtos.service';
 })
 export class CarrinhoPage {
   itensCarrinho: any[] = [];
+  comandaId: string = '1'; // Defina aqui o número da comanda que você quer usar
 
   constructor(
     private produtosService: ProdutosService,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController,
+    private navController: NavController
   ) {}
 
   ionViewWillEnter() {
@@ -30,17 +34,40 @@ export class CarrinhoPage {
     this.carregarCarrinho();
   }
 
+  async presentToast(message: string, color: string = 'primary') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color: color,
+      position: 'bottom'
+    });
+    toast.present();
+  }
+
   async finalizarPedido() {
     try {
-      const comandaId = localStorage.getItem('comandaId');
-      if (comandaId) {
-        await this.produtosService.finalizarPedido(comandaId);
+      if (!this.comandaId) {
+        this.presentToast("Erro: Comanda ID não definido", 'danger');
+        return;
+      }
+  
+      const response = await this.produtosService.finalizarPedido(this.comandaId);
+      
+      if (response) {
+        this.presentToast("Finalizado com Sucesso", 'success');
         this.produtosService.limparCarrinho();
         this.itensCarrinho = [];
-        this.router.navigate(['/tabs/comanda']);
+  
+        // Redireciona para a home após 2 segundos
+        setTimeout(() => {
+          this.navController.navigateRoot('/home');
+        }, 2000);
+      } else {
+        this.presentToast("Erro ao finalizar o pedido", 'danger');
       }
-    } catch (error) {
+    } catch (error: any) {  // Ajuste para o tipo `any` em `error`
       console.error('Erro ao finalizar pedido:', error);
+      this.presentToast("Erro ao finalizar pedido: " + (error.message || error), 'danger');
     }
   }
 }

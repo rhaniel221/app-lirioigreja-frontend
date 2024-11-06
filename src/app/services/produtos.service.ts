@@ -64,62 +64,19 @@ export class ProdutosService {
     console.log('Carrinho limpo');
   }
 
-  async adicionarItemCarrinho(comandaId: string, produtoId: number, quantidade: number = 1) {
-    try {
-      const response = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/carrinho`, {
-          comanda_id: comandaId,
-          produto_id: produtoId,
-          quantidade: quantidade
-        })
-      );
-      console.log('Item adicionado ao carrinho no servidor:', response);
-      return response;
-    } catch (error) {
-      console.error('Erro ao adicionar item ao carrinho:', error);
-      throw error;
-    }
-  }
-
-  async getCarrinhoServidor(comandaId: string) {
-    try {
-      const response = await firstValueFrom(
-        this.http.get<any[]>(`${this.apiUrl}/carrinho?comanda_id=${comandaId}`)
-      );
-      console.log('Carrinho do servidor:', response);
-      return response;
-    } catch (error) {
-      console.error('Erro ao buscar carrinho do servidor:', error);
-      return [];
-    }
-  }
-
   async finalizarPedido(comandaId: string) {
     try {
-      const response = await firstValueFrom(
-        this.http.post(`${this.apiUrl}/finalizar-pedido`, {
-          comanda_id: comandaId
-        })
-      );
-      console.log('Pedido finalizado:', response);
-      this.limparCarrinho();
-      return response;
+        const response = await firstValueFrom(
+            this.http.post(`${this.apiUrl}/finalizar-pedido`, {
+                comanda_id: comandaId
+            })
+        );
+        console.log('Pedido finalizado:', response);
+        this.limparCarrinho();
+        return response;
     } catch (error) {
-      console.error('Erro ao finalizar pedido:', error);
-      throw error;
-    }
-  }
-
-  async consultarComanda(comandaId: string) {
-    try {
-      const response = await firstValueFrom(
-        this.http.get<any[]>(`${this.apiUrl}/consultar-comanda?comanda_id=${comandaId}`)
-      );
-      console.log('Consulta da comanda:', response);
-      return response;
-    } catch (error) {
-      console.error('Erro ao consultar comanda:', error);
-      return [];
+        console.error('Erro ao finalizar pedido:', error);
+        throw error;
     }
   }
 }

@@ -1,6 +1,7 @@
 // src/app/menu/menu.page.ts
 import { Component, OnInit } from '@angular/core';
 import { ProdutosService } from '../services/produtos.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +13,10 @@ export class MenuPage implements OnInit {
   produtosPorCategoria: { [key: number]: any[] } = {};
   categoriasExpandidas: { [key: number]: boolean } = {};
 
-  constructor(private produtosService: ProdutosService) {}
+  constructor(
+    private produtosService: ProdutosService,
+    private toastController: ToastController
+  ) {}
 
   async ngOnInit() {
     await this.carregarDados();
@@ -52,7 +56,15 @@ export class MenuPage implements OnInit {
     return this.categoriasExpandidas[categoriaId] || false;
   }
 
-  adicionarAoCarrinho(produto: any) {
+  async adicionarAoCarrinho(produto: any) {
     this.produtosService.adicionarAoCarrinho(produto);
+
+    // Exibe a mensagem de "Adicionado com sucesso"
+    const toast = await this.toastController.create({
+      message: 'Adicionado com sucesso!',
+      duration: 2000, // Duração de 2 segundos
+      position: 'bottom'
+    });
+    toast.present();
   }
 }
