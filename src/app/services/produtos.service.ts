@@ -43,8 +43,16 @@ export class ProdutosService {
   }
 
   adicionarAoCarrinho(produto: any) {
-    console.log('Adicionando ao carrinho:', produto);
-    this.carrinho.push(produto);
+    // Verifica se o produto já existe no carrinho
+    const itemExistente = this.carrinho.find(item => item.id === produto.id);
+    if (itemExistente) {
+      // Se existe, incrementa a quantidade
+      itemExistente.quantidade = (itemExistente.quantidade || 1) + 1;
+    } else {
+      // Se não existe, adiciona com quantidade 1
+      this.carrinho.push({...produto, quantidade: 1});
+    }
+    console.log('Carrinho atualizado:', this.carrinho);
   }
 
   removerDoCarrinho(item: any) {
@@ -52,6 +60,7 @@ export class ProdutosService {
     if (index > -1) {
       this.carrinho.splice(index, 1);
       console.log('Item removido do carrinho:', item);
+      console.log('Carrinho atualizado:', this.carrinho);
     }
   }
 
@@ -66,17 +75,45 @@ export class ProdutosService {
 
   async finalizarPedido(comandaId: string) {
     try {
-        const response = await firstValueFrom(
-            this.http.post(`${this.apiUrl}/finalizar-pedido`, {
-                comanda_id: comandaId
-            })
-        );
-        console.log('Pedido finalizado:', response);
-        this.limparCarrinho();
-        return response;
+      // Verifica se há itens no carrinho
+      if (this.carrinho.length === 0) {
+        throw new Error('Carrinho vazio');
+      }
+
+      // Prepara os dados para serem enviados
+      const pedidoData = {
+        comanda_id: comandaId,
+        itens: this.carrinho.map(item => ({
+          produto_id: item.id,
+          quantidade: item.quantidade || 1
+        }))
+      };
+
+      console.log('Enviando pedido:', pedidoData);
+
+      const response = await firstValueFrom(
+        this.http.post(`${this.apiUrl}/finalizar-pedido`, pedidoData)
+      );
+
+      console.log('Pedido finalizado com sucesso:', response);
+      this.limparCarrinho();
+      return response;
     } catch (error) {
-        console.error('Erro ao finalizar pedido:', error);
-        throw error;
+      console.error('Erro ao finalizar pedido:', error);
+      throw error;
+    }
+  }
+
+  async getCarrinhoComanda(comandaId: string) {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<any[]>(`${this.apiUrl}/carrinho?comanda_id=${comandaId}`)
+      );
+      console.log('Carrinho da comanda:', response);
+      return response;
+    } catch (error) {
+      console.error('Erro ao buscar carrinho:', error);
+      return [];
     }
   }
 }
