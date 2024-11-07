@@ -1,0 +1,26 @@
+.categoria-header {
+    --background: transparent; // Remove o fundo cinza
+    padding: 8px; // Adiciona um pouco de padding para espaçamento interno
+    border-bottom: 1px solid var(--ion-color-medium); // Linha fina para separar categorias
+  
+    ion-label {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--ion-color-primary); // Cor do texto principal
+      font-size: 14px; // Ajuste do tamanho da fonte
+    }
+  
+    ion-icon {
+      color: var(--ion-color-primary); // Cor do ícone principal
+    }
+  }
+  
+  .adicionar-carrinho {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --border-radius: 5px;
+    font-size: 14px; // Reduzindo o tamanho da fonte
+    height: 30px; // Ajusta a altura do botão
+    line-height: 1;
+  }
+  

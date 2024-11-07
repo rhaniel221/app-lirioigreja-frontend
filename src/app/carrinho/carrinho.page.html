@@ -1,7 +1,6 @@
-<!-- src/app/carrinho/carrinho.page.html -->
 <ion-header>
   <ion-toolbar>
-    <ion-title>Carrinho</ion-title>
+    <ion-title>CARRINHO</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,17 +8,25 @@
   <ion-list>
     <ion-item *ngFor="let item of itensCarrinho">
       <ion-label>
+        <!-- Nome do Produto -->
         <h2>{{ item.nome }}</h2>
+
+        <!-- Descrição do Produto (exibida apenas se existir) -->
         <p *ngIf="item.descricao">{{ item.descricao }}</p>
+
+        <!-- Quantidade e Preço -->
         <p>Quantidade: {{ item.quantidade || 1 }}</p>
         <p>R$ {{ (item.preco * (item.quantidade || 1)).toFixed(2) }}</p>
       </ion-label>
+
+      <!-- Botão de Remover -->
       <ion-button slot="end" color="danger" (click)="removerDoCarrinho(item)">
         REMOVER
       </ion-button>
     </ion-item>
   </ion-list>
 
+  <!-- Total e Finalizar Pedido -->
   <div *ngIf="itensCarrinho.length > 0" class="ion-padding">
     <p><strong>Total: R$ {{ calcularTotal().toFixed(2) }}</strong></p>
   </div>
@@ -32,6 +39,7 @@
     FINALIZAR PEDIDO
   </ion-button>
 
+  <!-- Mensagem de Carrinho Vazio -->
   <div *ngIf="itensCarrinho.length === 0" class="ion-padding ion-text-center">
     <p>Carrinho vazio</p>
   </div>

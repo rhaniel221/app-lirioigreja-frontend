@@ -58,12 +58,13 @@ export class MenuPage implements OnInit {
 
   async adicionarAoCarrinho(produto: any) {
     this.produtosService.adicionarAoCarrinho(produto);
-
+  
     // Exibe a mensagem de "Adicionado com sucesso"
     const toast = await this.toastController.create({
       message: 'Adicionado com sucesso!',
-      duration: 2000, // Duração de 2 segundos
-      position: 'bottom'
+      duration: 800, // Duração de 2 segundos
+      position: 'middle', // Centraliza o toast na tela
+      cssClass: 'custom-toast' // Classe CSS personalizada
     });
     toast.present();
   }

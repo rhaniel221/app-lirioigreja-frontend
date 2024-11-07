@@ -72,12 +72,13 @@ export class ComandaPage {
     await alert.present();
   }
 
-  async presentToast(message: string, color: string) {
+  async presentToast(message: string, color: string = 'light') {
     const toast = await this.toastController.create({
       message,
       duration: 2000,
-      color,
-      position: 'bottom',
+      color: color, // Cor do toast
+      position: 'middle', // Centraliza o toast na tela
+      cssClass: 'custom-toast' // Classe CSS personalizada
     });
     toast.present();
   }
