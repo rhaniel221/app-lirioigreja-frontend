@@ -17,7 +17,15 @@ export class ComandaPage {
     private alertController: AlertController
   ) {}
 
+  onInputChange(event: any) {
+    this.comandaId = event.target.value;
+    console.log("Comanda ID atualizado:", this.comandaId);
+  }
+
   async buscarComanda() {
+    console.log("Buscar Comanda foi clicado");
+    console.log("Valor de comandaId:", this.comandaId);
+
     if (!this.comandaId) {
       this.presentToast('Informe o número da comanda', 'danger');
       return;
@@ -25,12 +33,20 @@ export class ComandaPage {
 
     try {
       this.itensComanda = await this.produtosService.consultarComanda(this.comandaId);
+      console.log("Itens da comanda obtidos:", this.itensComanda);
     } catch (error) {
+      console.error("Erro ao buscar a comanda:", error);
       this.presentToast('Erro ao buscar a comanda', 'danger');
     }
   }
 
   async limparComanda() {
+    console.log("Limpando comanda com ID:", this.comandaId);
+    if (!this.comandaId) {
+      this.presentToast('Informe o número da comanda', 'danger');
+      return;
+    }
+
     const alert = await this.alertController.create({
       header: 'Limpar Comanda',
       message: `Deseja realmente limpar a comanda ${this.comandaId}?`,
