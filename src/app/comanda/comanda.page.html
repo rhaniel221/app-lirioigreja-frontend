@@ -15,7 +15,7 @@
   <ion-list *ngIf="itensComanda.length > 0">
     <ion-item *ngFor="let item of itensComanda">
       <ion-label>
-        <h2>{{ item.nome }}</h2>
+        <h2>{{ item.item_nome }}</h2>
         <p>{{ item.descricao }}</p>
         <p>R$ {{ item.preco }}</p>
         <p>Quantidade: {{ item.quantidade }}</p>
