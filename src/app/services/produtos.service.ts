@@ -152,16 +152,29 @@ export class ProdutosService {
     }
   }
 
-  async consultarComanda(comandaId: string) {
+  async consultarComanda(numero: string) {
     try {
       const response = await firstValueFrom(
-        this.http.get<any[]>(`${this.apiUrl}/consultar-comanda?comanda_id=${comandaId}`)
+        this.http.get<any[]>(`${this.apiUrl}/consultar-comanda?numero=${numero}`)
       );
       console.log('Consulta da comanda:', response);
       return response;
     } catch (error) {
       console.error('Erro ao consultar comanda:', error);
       return [];
+    }
+  }
+
+  async limparComanda(numero: string) {
+    try {
+      const response = await firstValueFrom(
+        this.http.delete(`${this.apiUrl}/limpar-comanda?numero=${numero}`)
+      );
+      console.log('Comanda limpa:', response);
+      return response;
+    } catch (error) {
+      console.error('Erro ao limpar comanda:', error);
+      throw error;
     }
   }
 }

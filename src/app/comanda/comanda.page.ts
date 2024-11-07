@@ -1,6 +1,6 @@
-// src/app/comanda/comanda.page.ts
 import { Component } from '@angular/core';
-import { ComandaService } from '../services/comanda.service';
+import { ProdutosService } from '../services/produtos.service';
+import { ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-comanda',
@@ -8,23 +8,61 @@ import { ComandaService } from '../services/comanda.service';
   styleUrls: ['./comanda.page.scss'],
 })
 export class ComandaPage {
-  pedidos: any[] = [];
-  numeroComanda: string = '';
+  comandaId: string = '';
+  itensComanda: any[] = [];
 
-  constructor(private comandaService: ComandaService) {}
+  constructor(
+    private produtosService: ProdutosService,
+    private toastController: ToastController,
+    private alertController: AlertController
+  ) {}
 
-  ionViewWillEnter() {
-    this.carregarComanda();
+  async buscarComanda() {
+    if (!this.comandaId) {
+      this.presentToast('Informe o número da comanda', 'danger');
+      return;
+    }
+
+    try {
+      this.itensComanda = await this.produtosService.consultarComanda(this.comandaId);
+    } catch (error) {
+      this.presentToast('Erro ao buscar a comanda', 'danger');
+    }
   }
 
-  async carregarComanda() {
-    try {
-      this.numeroComanda = localStorage.getItem('comandaId') || '';
-      if (this.numeroComanda) {
-        this.pedidos = await this.comandaService.getPedidosComanda(this.numeroComanda);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar comanda:', error);
-    }
+  async limparComanda() {
+    const alert = await this.alertController.create({
+      header: 'Limpar Comanda',
+      message: `Deseja realmente limpar a comanda ${this.comandaId}?`,
+      buttons: [
+        {
+          text: 'Não',
+          role: 'cancel',
+        },
+        {
+          text: 'Sim',
+          handler: async () => {
+            try {
+              await this.produtosService.limparComanda(this.comandaId);
+              this.itensComanda = [];
+              this.presentToast('Comanda limpa com sucesso', 'success');
+            } catch (error) {
+              this.presentToast('Erro ao limpar a comanda', 'danger');
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color,
+      position: 'bottom',
+    });
+    toast.present();
   }
 }

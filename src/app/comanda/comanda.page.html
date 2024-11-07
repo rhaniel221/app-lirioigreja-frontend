@@ -1,17 +1,27 @@
-<!-- src/app/comanda/comanda.page.html -->
 <ion-header>
   <ion-toolbar>
-    <ion-title>Comanda {{ numeroComanda }}</ion-title>
+    <ion-title>Comanda</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let pedido of pedidos">
+  <ion-item>
+    <ion-label position="floating">Número da Comanda</ion-label>
+    <ion-input [(ngModel)]="comandaId"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="buscarComanda()">Buscar Comanda</ion-button>
+
+  <ion-list *ngIf="itensComanda.length > 0">
+    <ion-item *ngFor="let item of itensComanda">
       <ion-label>
-        <h2>{{ pedido.nome }}</h2>
-        <p>R$ {{ pedido.preco.toFixed(2) }}</p>
+        <h2>{{ item.nome }}</h2>
+        <p>{{ item.descricao }}</p>
+        <p>R$ {{ item.preco }}</p>
+        <p>Quantidade: {{ item.quantidade }}</p>
       </ion-label>
     </ion-item>
   </ion-list>
+
+  <ion-button color="danger" expand="full" (click)="limparComanda()">Limpar Comanda</ion-button>
 </ion-content>
