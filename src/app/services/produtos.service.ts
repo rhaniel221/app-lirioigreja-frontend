@@ -9,15 +9,79 @@ import { firstValueFrom } from 'rxjs';
 export class ProdutosService {
   private apiUrl = 'http://127.0.0.1:5000';
   private carrinho: any[] = [];
+  private comandaAtual: any = null;
 
   constructor(private http: HttpClient) {}
 
+  // Métodos de Gestão da Comanda
+  setComandaAtual(comanda: any) {
+    this.comandaAtual = comanda;
+    localStorage.setItem('comandaAtual', JSON.stringify(comanda));
+  }
+
+  getComandaAtual() {
+    if (!this.comandaAtual) {
+      const comandaSalva = localStorage.getItem('comandaAtual');
+      if (comandaSalva) {
+        this.comandaAtual = JSON.parse(comandaSalva);
+      }
+    }
+    return this.comandaAtual;
+  }
+
+  limparComandaAtual() {
+    this.comandaAtual = null;
+    localStorage.removeItem('comandaAtual');
+  }
+
+  // Métodos de Gestão do Carrinho
+  adicionarAoCarrinho(produto: any) {
+    console.log('Adicionando ao carrinho:', produto);
+    const itemExistente = this.carrinho.find(item => item.id === produto.id);
+    if (itemExistente) {
+      itemExistente.quantidade = (itemExistente.quantidade || 1) + 1;
+    } else {
+      this.carrinho.push({ ...produto, quantidade: 1 });
+    }
+    this.salvarCarrinhoLocal();
+  }
+
+  removerDoCarrinho(item: any) {
+    const index = this.carrinho.findIndex(i => i.id === item.id);
+    if (index > -1) {
+      this.carrinho.splice(index, 1);
+      this.salvarCarrinhoLocal();
+    }
+  }
+
+  getCarrinho() {
+    this.carregarCarrinhoLocal();
+    return this.carrinho;
+  }
+
+  limparCarrinho() {
+    this.carrinho = [];
+    this.salvarCarrinhoLocal();
+  }
+
+  private salvarCarrinhoLocal() {
+    localStorage.setItem('carrinho', JSON.stringify(this.carrinho));
+  }
+
+  private carregarCarrinhoLocal() {
+    const carrinhoSalvo = localStorage.getItem('carrinho');
+    if (carrinhoSalvo) {
+      this.carrinho = JSON.parse(carrinhoSalvo);
+    }
+  }
+
+  // Métodos de API
   async getCategorias(): Promise<any[]> {
     try {
       const response = await firstValueFrom(
         this.http.get<any[]>(`${this.apiUrl}/categorias`)
       );
-      console.log('Resposta getCategorias:', response);
+      console.log('Categorias obtidas:', response);
       return response || [];
     } catch (error) {
       console.error('Erro ao buscar categorias:', error);
@@ -34,7 +98,7 @@ export class ProdutosService {
       const response = await firstValueFrom(
         this.http.get<any[]>(url)
       );
-      console.log(`Resposta getProdutos (categoria ${categoriaId}):`, response);
+      console.log(`Produtos obtidos (categoria ${categoriaId}):`, response);
       return response || [];
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
@@ -42,45 +106,28 @@ export class ProdutosService {
     }
   }
 
-  adicionarAoCarrinho(produto: any) {
-    // Verifica se o produto já existe no carrinho
-    const itemExistente = this.carrinho.find(item => item.id === produto.id);
-    if (itemExistente) {
-      // Se existe, incrementa a quantidade
-      itemExistente.quantidade = (itemExistente.quantidade || 1) + 1;
-    } else {
-      // Se não existe, adiciona com quantidade 1
-      this.carrinho.push({...produto, quantidade: 1});
+  async registrarComanda(numero: string) {
+    try {
+      const response = await firstValueFrom(
+        this.http.post<any>(`${this.apiUrl}/comandas`, { numero })
+      );
+      console.log('Resposta do registro de comanda:', response);
+      return response;
+    } catch (error) {
+      console.error('Erro ao registrar comanda:', error);
+      throw error;
     }
-    console.log('Carrinho atualizado:', this.carrinho);
-  }
-
-  removerDoCarrinho(item: any) {
-    const index = this.carrinho.findIndex(i => i.id === item.id);
-    if (index > -1) {
-      this.carrinho.splice(index, 1);
-      console.log('Item removido do carrinho:', item);
-      console.log('Carrinho atualizado:', this.carrinho);
-    }
-  }
-
-  getCarrinho() {
-    return this.carrinho;
-  }
-
-  limparCarrinho() {
-    this.carrinho = [];
-    console.log('Carrinho limpo');
   }
 
   async finalizarPedido(comandaId: string) {
     try {
-      // Verifica se há itens no carrinho
-      if (this.carrinho.length === 0) {
-        throw new Error('Carrinho vazio');
+      if (!comandaId) {
+        throw new Error('Comanda ID não informado');
       }
 
-      // Prepara os dados para serem enviados
+      console.log('Iniciando finalização do pedido para comanda:', comandaId);
+      console.log('Itens no carrinho:', this.carrinho);
+
       const pedidoData = {
         comanda_id: comandaId,
         itens: this.carrinho.map(item => ({
@@ -89,14 +136,15 @@ export class ProdutosService {
         }))
       };
 
-      console.log('Enviando pedido:', pedidoData);
+      console.log('Dados do pedido a serem enviados:', pedidoData);
 
       const response = await firstValueFrom(
         this.http.post(`${this.apiUrl}/finalizar-pedido`, pedidoData)
       );
-
-      console.log('Pedido finalizado com sucesso:', response);
+      
+      console.log('Resposta da finalização do pedido:', response);
       this.limparCarrinho();
+      this.limparComandaAtual();
       return response;
     } catch (error) {
       console.error('Erro ao finalizar pedido:', error);
@@ -104,15 +152,15 @@ export class ProdutosService {
     }
   }
 
-  async getCarrinhoComanda(comandaId: string) {
+  async consultarComanda(comandaId: string) {
     try {
       const response = await firstValueFrom(
-        this.http.get<any[]>(`${this.apiUrl}/carrinho?comanda_id=${comandaId}`)
+        this.http.get<any[]>(`${this.apiUrl}/consultar-comanda?comanda_id=${comandaId}`)
       );
-      console.log('Carrinho da comanda:', response);
+      console.log('Consulta da comanda:', response);
       return response;
     } catch (error) {
-      console.error('Erro ao buscar carrinho:', error);
+      console.error('Erro ao consultar comanda:', error);
       return [];
     }
   }

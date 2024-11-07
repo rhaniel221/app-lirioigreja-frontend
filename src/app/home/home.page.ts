@@ -1,7 +1,8 @@
 // src/app/home/home.page.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ComandaService } from '../services/comanda.service';
+import { ProdutosService } from '../services/produtos.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -12,22 +13,40 @@ export class HomePage {
   numeroComanda: string = '';
 
   constructor(
-    private comandaService: ComandaService,
-    private router: Router
+    private produtosService: ProdutosService,
+    private router: Router,
+    private toastController: ToastController
   ) {}
 
   async registrarComanda() {
-    console.log('Clicou em registrar comanda');
-    if (this.numeroComanda) {
-      try {
-        console.log('Enviando requisição para registrar comanda:', this.numeroComanda);
-        await this.comandaService.registrarComanda(this.numeroComanda);
-        console.log('Comanda registrada com sucesso');
-        localStorage.setItem('numeroComanda', this.numeroComanda);
-        this.router.navigate(['/tabs/menu']);
-      } catch (error) {
-        console.error('Erro ao registrar comanda:', error);
-      }
+    if (!this.numeroComanda) {
+      this.presentToast('Número da comanda é obrigatório', 'warning');
+      return;
     }
+
+    try {
+      const response = await this.produtosService.registrarComanda(this.numeroComanda);
+
+      if (response.comanda) {
+        this.produtosService.setComandaAtual(response.comanda);
+        this.presentToast('Comanda registrada com sucesso', 'success');
+        this.router.navigate(['/tabs/menu']);
+      } else {
+        this.presentToast('Comanda não encontrada', 'warning');
+      }
+    } catch (error) {
+      console.error('Erro ao registrar comanda:', error);
+      this.presentToast('Erro ao registrar comanda', 'danger');
+    }
+  }
+
+  async presentToast(message: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color,
+      position: 'bottom'
+    });
+    toast.present();
   }
 }

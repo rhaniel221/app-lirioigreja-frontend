@@ -11,7 +11,7 @@ import { ToastController, NavController } from '@ionic/angular';
 })
 export class CarrinhoPage {
   itensCarrinho: any[] = [];
-  comandaId: string = '1'; // Defina aqui o número da comanda que você quer usar
+  comandaAtual: any = null;
 
   constructor(
     private produtosService: ProdutosService,
@@ -21,17 +21,25 @@ export class CarrinhoPage {
   ) {}
 
   ionViewWillEnter() {
-    this.carregarCarrinho();
+    this.carregarDados();
   }
 
-  carregarCarrinho() {
+  carregarDados() {
     this.itensCarrinho = this.produtosService.getCarrinho();
+    this.comandaAtual = this.produtosService.getComandaAtual();
     console.log('Itens no carrinho:', this.itensCarrinho);
+    console.log('Comanda atual:', this.comandaAtual);
+  }
+
+  calcularTotal(): number {
+    return this.itensCarrinho.reduce((total, item) => {
+      return total + (item.preco * (item.quantidade || 1));
+    }, 0);
   }
 
   removerDoCarrinho(item: any) {
     this.produtosService.removerDoCarrinho(item);
-    this.carregarCarrinho();
+    this.carregarDados();
   }
 
   async presentToast(message: string, color: string = 'primary') {
@@ -46,28 +54,31 @@ export class CarrinhoPage {
 
   async finalizarPedido() {
     try {
-      if (!this.comandaId) {
-        this.presentToast("Erro: Comanda ID não definido", 'danger');
+      if (!this.comandaAtual?.id) {
+        this.presentToast("Erro: Comanda não identificada", 'danger');
         return;
       }
-  
-      const response = await this.produtosService.finalizarPedido(this.comandaId);
-      
-      if (response) {
-        this.presentToast("Finalizado com Sucesso", 'success');
-        this.produtosService.limparCarrinho();
-        this.itensCarrinho = [];
-  
-        // Redireciona para a home após 2 segundos
-        setTimeout(() => {
-          this.navController.navigateRoot('/home');
-        }, 2000);
-      } else {
-        this.presentToast("Erro ao finalizar o pedido", 'danger');
+
+      if (this.itensCarrinho.length === 0) {
+        this.presentToast("Erro: Carrinho vazio", 'danger');
+        return;
       }
-    } catch (error: any) {  // Ajuste para o tipo `any` em `error`
+
+      const response = await this.produtosService.finalizarPedido(this.comandaAtual.id);
+      console.log('Pedido finalizado:', response);
+      
+      this.presentToast("Pedido finalizado com sucesso", 'success');
+      
+      // Redireciona para a home após 2 segundos
+      setTimeout(() => {
+        this.navController.navigateRoot('/tabs/home');
+      }, 2000);
+    } catch (error: any) {
       console.error('Erro ao finalizar pedido:', error);
-      this.presentToast("Erro ao finalizar pedido: " + (error.message || error), 'danger');
+      this.presentToast(
+        "Erro ao finalizar pedido: " + (error.message || "Erro desconhecido"), 
+        'danger'
+      );
     }
   }
 }
