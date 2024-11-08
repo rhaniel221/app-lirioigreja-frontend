@@ -21,6 +21,9 @@
             <h2>{{ produto.nome }}</h2>
             <p *ngIf="produto.descricao">{{ produto.descricao }}</p>
             <p class="preco">R$ {{ produto.preco?.toFixed(2) }}</p>
+            <p *ngIf="produto.quantidade_disponivel !== null">
+              Disponível: {{ produto.quantidade_disponivel }}
+            </p>
           </ion-label>
           <ion-button class="adicionar-carrinho" slot="end" (click)="adicionarAoCarrinho(produto)">
             Adicionar
