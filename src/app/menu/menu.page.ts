@@ -26,6 +26,7 @@ export class MenuPage implements OnInit {
   categorias: Categoria[] = [];
   produtosPorCategoria: { [key: number]: Produto[] } = {};
   categoriasExpandidas: { [key: number]: boolean } = {};
+  comandaAtual: any = null;
 
   constructor(
     private produtosService: ProdutosService,
@@ -38,6 +39,7 @@ export class MenuPage implements OnInit {
 
   async ionViewWillEnter() {
     await this.carregarDados();
+    this.comandaAtual = this.produtosService.getComandaAtual();
   }
 
   async carregarDados() {

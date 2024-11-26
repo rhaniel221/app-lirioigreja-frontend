@@ -1,4 +1,3 @@
-// src/app/home/home.page.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProdutosService } from '../services/produtos.service';
@@ -18,6 +17,11 @@ export class HomePage {
     private toastController: ToastController
   ) {}
 
+  ionViewWillEnter() {
+    // Limpa o campo toda vez que a página for carregada
+    this.numeroComanda = '';
+  }
+
   async registrarComanda() {
     if (!this.numeroComanda) {
       this.presentToast('Número da comanda é obrigatório', 'warning');
@@ -29,7 +33,12 @@ export class HomePage {
 
       if (response.comanda) {
         this.produtosService.setComandaAtual(response.comanda);
-        this.presentToast('Comanda registrada com sucesso', 'success');
+        await this.presentToast('Comanda registrada com sucesso', 'success');
+        
+        // Limpa o campo após registrar com sucesso
+        this.numeroComanda = '';
+        
+        // Navega para o menu
         this.router.navigate(['/tabs/menu']);
       } else {
         this.presentToast('Comanda não encontrada', 'warning');
@@ -44,9 +53,9 @@ export class HomePage {
     const toast = await this.toastController.create({
       message,
       duration: 2000,
-      color: color, // Cor do toast
-      position: 'middle', // Centraliza o toast na tela
-      cssClass: 'custom-toast' // Classe CSS personalizada
+      color: color,
+      position: 'middle',
+      cssClass: 'custom-toast'
     });
     toast.present();
   }

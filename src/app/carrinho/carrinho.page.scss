@@ -1,20 +1,26 @@
-ion-item {
-  --background: #2c2c2c; /* Fundo sólido escuro para contraste */
-
-  ion-label {
-    h2 {
-      color: #ffffff; /* Título com cor branca para visibilidade */
-      font-size: 16px;
-      font-weight: 500;
-    }
-
-    p {
-      color: #cccccc; /* Descrição e preço com cinza claro */
-      font-size: 14px;
-    }
-  }
+/* Estilo para a comanda registrada */
+.comanda-registrada {
+  background-color: #007BFF;  /* Cor de fundo azul suave */
+  color: white;               /* Texto branco */
+  font-weight: bold;          /* Font weight em negrito */
+  padding: 4px 12px;          /* Menor padding e mais espaçamento lateral */
+  border-radius: 25px;        /* Bordas mais arredondadas */
+  font-size: 0.9rem;          /* Fonte ainda menor para não ocupar muito espaço */
+  display: flex;              /* Flexbox para alinhamento */
+  align-items: center;        /* Alinhar verticalmente */
+  gap: 8px;                   /* Menor espaçamento entre o ícone e o texto */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  margin-left: 10px;          /* Ajuste para afastar da borda esquerda */
+  margin-right: 10px;         /* Afastar da borda direita */
 }
 
-ion-button[expand="full"] {
-  margin: 16px;
+.comanda-registrada ion-icon {
+  font-size: 1rem;            /* Tamanho reduzido do ícone */
+  color: white;               /* Cor do ícone branca */
+}
+
+/* Efeito de hover */
+.comanda-registrada:hover {
+  transform: scale(1.03);     /* Efeito de aumento suave */
+  transition: transform 0.2s ease-in-out; /* Transição suave */
 }

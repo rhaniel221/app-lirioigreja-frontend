@@ -73,7 +73,7 @@ export class CarrinhoPage {
       // Redireciona para a home após 2 segundos
       setTimeout(() => {
         this.navController.navigateRoot('/tabs/home');
-      }, 2000);
+      }, 1000);
     } catch (error: any) {
       console.error('Erro ao finalizar pedido:', error);
       this.presentToast(
