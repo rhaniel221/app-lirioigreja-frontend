@@ -21,12 +21,23 @@
             <h2>{{ produto.nome }}</h2>
             <p *ngIf="produto.descricao">{{ produto.descricao }}</p>
             <p class="preco">R$ {{ produto.preco?.toFixed(2) }}</p>
-            <p *ngIf="produto.quantidade_disponivel !== null">
-              Disponível: {{ produto.quantidade_disponivel }}
+            <p [ngClass]="{
+              'disponivel': produto.quantidade_disponivel > 5,
+              'pouco-estoque': produto.quantidade_disponivel > 0 && produto.quantidade_disponivel <= 5,
+              'indisponivel': produto.quantidade_disponivel <= 0
+            }">
+              {{ produto.quantidade_disponivel > 0 ? 
+                 'Disponível: ' + produto.quantidade_disponivel :
+                 'Indisponível' }}
             </p>
           </ion-label>
-          <ion-button class="adicionar-carrinho" slot="end" (click)="adicionarAoCarrinho(produto)">
-            Adicionar
+          <ion-button 
+            class="adicionar-carrinho" 
+            slot="end" 
+            (click)="adicionarAoCarrinho(produto)"
+            [disabled]="produto.quantidade_disponivel <= 0"
+            [color]="produto.quantidade_disponivel <= 0 ? 'medium' : 'primary'">
+            {{ produto.quantidade_disponivel > 0 ? 'Adicionar' : 'Indisponível' }}
           </ion-button>
         </ion-item>
       </div>
