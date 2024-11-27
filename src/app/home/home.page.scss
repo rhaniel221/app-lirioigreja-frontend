@@ -1,26 +1,103 @@
-.categoria-header {
-    --background: transparent; // Remove o fundo cinza
-    padding: 8px; // Adiciona um pouco de padding para espaçamento interno
-    border-bottom: 1px solid var(--ion-color-medium); // Linha fina para separar categorias
-  
-    ion-label {
-      font-weight: bold;
-      text-transform: uppercase;
-      color: var(--ion-color-primary); // Cor do texto principal
-      font-size: 14px; // Ajuste do tamanho da fonte
-    }
-  
-    ion-icon {
-      color: var(--ion-color-primary); // Cor do ícone principal
-    }
+/* Remover fundo do cabeçalho e título */
+ion-header {
+  --background: transparent !important; /* Fundo transparente */
+  --box-shadow: none !important; /* Remover qualquer sombra */
+  padding-bottom: 0px !important; /* Remover qualquer padding inferior */
+  box-shadow: none !important; /* Remover qualquer sombra do cabeçalho */
+}
+
+/* Ajustar tamanho da imagem do logo */
+.logo-header {
+  max-width: 60%; /* Aumentado 5% para o mobile */
+  max-height: 60%; /* Aumentado 5% para o mobile */
+  margin: 0 auto; /* Centralizar horizontalmente */
+  display: block; /* Certifica que a imagem é exibida como um bloco */
+  position: relative; /* Posicionamento relativo para ajuste fino */
+  top: 5px; /* Ajuste fino para centralizar verticalmente */
+}
+
+/* Ajustar para desktop */
+@media (min-width: 768px) {
+  .logo-header {
+    max-width: 30%; /* Reduz a largura da imagem em telas maiores */
+    max-height: 30%; /* Ajusta a altura proporcionalmente */
+    top: 0px; /* Remove o deslocamento vertical */
   }
-  
-  .adicionar-carrinho {
-    --padding-start: 8px;
-    --padding-end: 8px;
-    --border-radius: 5px;
-    font-size: 14px; // Reduzindo o tamanho da fonte
-    height: 30px; // Ajusta a altura do botão
-    line-height: 1;
-  }
-  
+}
+
+/* Estilo para o campo de 'Número da Comanda' com fundo cinza */
+.comanda-input {
+  --background: #cecece00 !important; /* Fundo cinza claro */
+  --color: #ffffff; /* Cor do texto preta */
+  font-size: 19px !important; /* Tamanho da fonte */
+  padding: 12px 8px; /* Ajustar o padding do campo */
+  border-radius: 15px !important; /* Arredondamento do fundo */
+  box-shadow: none !important; /* Remover qualquer sombra */
+  width: 95% !important; /* Diminuir a largura do campo em 5% (uniformemente em ambos os lados) */
+  margin: 0 auto; /* Centralizar o campo na tela */
+}
+
+/* Estilo para o botão 'Registrar Comanda' */
+ion-button.registrar-comanda {
+  --background: #e7bb2b !important; /* Cor de fundo amarela */
+  --color: rgb(0, 0, 0) !important; /* Cor do texto branca */
+  --border-radius: 5px !important; /* Borda arredondada */
+  --box-shadow: none !important; /* Remover sombra */
+  height: 40px !important; /* Altura reduzida do botão */
+  font-size: 16px !important; /* Tamanho da fonte */
+  font-weight: bold !important; /* Texto em negrito */
+  width: 80% !important; /* Largura reduzida (20% menor) */
+  margin-left: auto; /* Centraliza o botão horizontalmente */
+  margin-right: auto;
+}
+
+ion-button.registrar-comanda ion-icon {
+  font-size: 20px !important; /* Reduzir o ícone em 20% */
+}
+
+ion-button.registrar-comanda:hover {
+  --background: #e0b200 !important; /* Cor de fundo amarela mais escura ao passar o mouse */
+}
+
+ion-button.registrar-comanda:disabled {
+  --background: #d3d3d3 !important; /* Cor de fundo quando desabilitado */
+  --color: #e70000 !important;
+}
+
+/* Remover fundo e sombra do toolbar */
+ion-toolbar {
+  --background: transparent !important; /* Fundo transparente no toolbar */
+  --box-shadow: none !important; /* Remover qualquer sombra */
+}
+
+/* Remover qualquer borda ou sombra no item */
+ion-item {
+  --background: transparent !important; /* Fundo transparente no item */
+  border: none !important; /* Remover borda */
+  box-shadow: none !important; /* Remover sombra */
+  border-radius: 15px !important; /* Arredondar o item */
+  overflow: hidden; /* Garantir que o conteúdo não ultrapasse o arredondamento */
+}
+
+/* Estilo para o campo "Número da Comanda" */
+ion-item ion-label {
+  font-size: 16px !important; 
+  color: #ffffff !important; /* Cor branca para o label */
+}
+
+ion-input {
+  font-size: 16px !important; /* Ajustar o tamanho da fonte do input */
+  padding: 12px 8px; /* Ajustar o padding do campo de input */
+  border-radius: 15px !important; /* Aplicar o arredondamento ao campo de input */
+  box-shadow: none !important; /* Remover qualquer sombra do input */
+}
+
+/* Remover qualquer sombra de outros elementos com sombras */
+ion-card, ion-list, ion-item-divider, ion-toggle, ion-radio-group, ion-checkbox {
+  box-shadow: none !important; /* Remover sombra de outros elementos */
+}
+
+/* Garantir que as sombras estejam removidas de qualquer elemento adicional */
+* {
+  box-shadow: none !important; /* Remover sombra globalmente de todos os elementos */
+}

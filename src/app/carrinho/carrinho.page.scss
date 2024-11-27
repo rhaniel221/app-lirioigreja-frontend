@@ -1,26 +1,93 @@
-/* Estilo para a comanda registrada */
+/* Remover fundo e sombra do toolbar */
+ion-toolbar {
+  --background: transparent !important; /* Fundo transparente */
+  --box-shadow: none !important; /* Remover qualquer sombra */
+  display: flex; /* Usar Flexbox */
+  justify-content: center; /* Centralizar o conteúdo horizontalmente */
+  align-items: center; /* Centralizar o conteúdo verticalmente */
+  position: relative; /* Garantir o layout correto */
+  padding: 0; /* Remover qualquer padding extra do toolbar */
+}
+
+/* Estilo para centralizar e estilizar a comanda */
 .comanda-registrada {
-  background-color: #007BFF;  /* Cor de fundo azul suave */
-  color: white;               /* Texto branco */
-  font-weight: bold;          /* Font weight em negrito */
-  padding: 4px 12px;          /* Menor padding e mais espaçamento lateral */
-  border-radius: 25px;        /* Bordas mais arredondadas */
-  font-size: 0.9rem;          /* Fonte ainda menor para não ocupar muito espaço */
-  display: flex;              /* Flexbox para alinhamento */
-  align-items: center;        /* Alinhar verticalmente */
-  gap: 8px;                   /* Menor espaçamento entre o ícone e o texto */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  margin-left: 10px;          /* Ajuste para afastar da borda esquerda */
-  margin-right: 10px;         /* Afastar da borda direita */
+  background-color: #dda200; /* Cor do fundo amarelo */
+  color: white; /* Cor do texto */
+  font-weight: bold; /* Texto em negrito */
+  padding: 9px 8px; /* Espaçamento interno */
+  border-radius: 20px; /* Bordas arredondadas */
+  font-size: 14px; /* Tamanho da fonte */
+  display: flex; /* Flexbox para alinhamento do conteúdo */
+  align-items: center; /* Alinhar verticalmente */
+  justify-content: center; /* Centralizar horizontalmente */
+  gap: 8px; /* Espaço entre ícone e texto */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+  max-width: 300px; /* Definir largura máxima */
+  width: auto; /* Permitir que a largura se ajuste conforme necessário */
+  margin: 0 auto; /* Centralizar horizontalmente */
 }
 
+/* Ajuste para o ícone na comanda */
 .comanda-registrada ion-icon {
-  font-size: 1rem;            /* Tamanho reduzido do ícone */
-  color: white;               /* Cor do ícone branca */
+  font-size: 18px; /* Tamanho do ícone */
+  color: white; /* Cor do ícone */
 }
 
-/* Efeito de hover */
-.comanda-registrada:hover {
-  transform: scale(1.03);     /* Efeito de aumento suave */
-  transition: transform 0.2s ease-in-out; /* Transição suave */
+/* Estilo para o botão de finalizar pedido */
+ion-button.finalizar-pedido {
+  --background: #ffcc00 !important; /* Cor de fundo amarela */
+  --background-hover: #ffcc00 !important;
+  --background-activated: #ffcc00 !important;
+  --background-focused: #ffcc00 !important;
+  --color: black !important; /* Texto em preto */
+  --border-radius: 20px !important; /* Bordas arredondadas */
+  --box-shadow: none !important; /* Remover sombra */
+  --text-transform: none !important; /* Garantir que o texto não seja transformado em maiúsculas */
+  --font-weight: bold !important; /* Texto em negrito */
+  padding: 8px 12px !important; /* Ajuste de padding */
+  outline: none !important; /* Remover contorno */
+  border: none !important; /* Remover borda padrão */
+  margin: 4px !important; /* Espaçamento adicional */
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Garantir que o texto dentro do botão também fique em preto */
+ion-button.finalizar-pedido span {
+  color: black !important;
+}
+
+/* Efeito de expansão ao passar o mouse */
+ion-button.finalizar-pedido:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Caso o botão de finalizar pedido esteja desabilitado */
+ion-button.finalizar-pedido:disabled {
+  --background: #d3d3d3 !important;
+  --background-hover: #d3d3d3 !important;
+  --background-activated: #d3d3d3 !important;
+  --background-focused: #d3d3d3 !important;
+  --color: #888 !important;
+  cursor: not-allowed !important;
+}
+
+/* Garantir que o botão "Finalizar Pedido" mantenha a cor amarela */
+button.button-native.finalizar-pedido {
+  background-color: #ffcc00 !important; /* Cor de fundo amarela */
+  color: white !important; /* Texto branco */
+  border-radius: 20px !important; /* Bordas arredondadas */
+  box-shadow: none !important; /* Remover sombra */
+}
+
+/* Garantir que o efeito ripple (clique) tenha cor amarela também */
+button.button-native.finalizar-pedido ion-ripple-effect {
+  background-color: rgba(255, 204, 0, 0.3) !important; /* Efeito ripple amarelo */
+}
+
+/* Garantir que o botão nativo 'finalizar-pedido' tenha a cor amarela em todos os casos */
+ion-button.finalizar-pedido::part(native) {
+  background-color: #ffcc00 !important; /* Cor amarela */
+  color: white !important; /* Texto branco */
 }

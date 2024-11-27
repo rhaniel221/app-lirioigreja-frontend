@@ -105,7 +105,7 @@ export class MenuPage implements OnInit {
   private async mostrarErro(mensagem: string) {
     const toast = await this.toastController.create({
       message: mensagem,
-      duration: 2000,
+      duration: 1000,
       position: 'middle',
       color: 'danger',
       cssClass: 'custom-toast'

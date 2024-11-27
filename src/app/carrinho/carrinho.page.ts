@@ -45,7 +45,7 @@ export class CarrinhoPage {
   async presentToast(message: string, color: string = 'light') {
     const toast = await this.toastController.create({
       message,
-      duration: 2000,
+      duration: 1000,
       color: color, // Cor do toast
       position: 'middle', // Centraliza o toast na tela
       cssClass: 'custom-toast' // Classe CSS personalizada

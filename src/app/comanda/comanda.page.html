@@ -5,13 +5,21 @@
 </ion-header>
 
 <ion-content>
+  <!-- Campo de entrada para número da comanda -->
   <ion-item>
     <ion-label position="floating">Número da Comanda</ion-label>
-    <ion-input [(ngModel)]="comandaId" type="text" (ionChange)="onInputChange($event)"></ion-input>
+    <ion-input 
+      #comandaInput
+      [(ngModel)]="comandaId"
+      type="text"
+      (ionChange)="onInputChange($event)">
+    </ion-input>
   </ion-item>
 
+  <!-- Botão de Buscar Comanda -->
   <ion-button expand="full" (click)="buscarComanda()">Buscar Comanda</ion-button>
 
+  <!-- Lista de itens da comanda -->
   <ion-list *ngIf="itensComanda.length > 0">
     <ion-item *ngFor="let item of itensComanda">
       <ion-label>
@@ -23,5 +31,11 @@
     </ion-item>
   </ion-list>
 
+  <!-- Botão de Limpar Comanda -->
   <ion-button color="danger" expand="full" (click)="limparComanda()">Limpar Comanda</ion-button>
+
+  <!-- Mensagem para quando não houver itens -->
+  <div *ngIf="itensComanda.length === 0" class="ion-padding ion-text-center">
+    <p>Nenhuma comanda carregada.</p>
+  </div>
 </ion-content>

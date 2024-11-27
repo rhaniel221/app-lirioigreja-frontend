@@ -1,12 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>CARRINHO</ion-title>
-    <ion-note slot="end" class="ion-padding-end" *ngIf="comandaAtual">
-      <div class="comanda-registrada">
-        <ion-icon name="wallet-outline"></ion-icon>
-        Comanda: {{ comandaAtual.numero }}
-      </div>
-    </ion-note>
+    <ion-title style="display: none;"></ion-title> <!-- Esconde o título -->
+    <div class="comanda-registrada" *ngIf="comandaAtual">
+      <ion-icon name="wallet-outline"></ion-icon>
+      Comanda: {{ comandaAtual.numero }}
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -29,13 +27,15 @@
     <p><strong>Total: R$ {{ calcularTotal().toFixed(2) }}</strong></p>
   </div>
 
+  <!-- Botão de finalizar pedido com a nova classe 'finalizar-pedido' -->
   <ion-button 
-    expand="block"
-    class="ion-padding"
-    (click)="finalizarPedido()"
-    [disabled]="itensCarrinho.length === 0">
-    FINALIZAR PEDIDO
-  </ion-button>
+  style="--background: #ffcc00 !important; --color: black !important; --border-radius: 20px !important; --box-shadow: none !important;"
+  expand="block"
+  class="ion-padding"
+  (click)="finalizarPedido()"
+  [disabled]="itensCarrinho.length === 0">
+  FINALIZAR PEDIDO
+</ion-button>
 
   <div *ngIf="itensCarrinho.length === 0" class="ion-padding ion-text-center">
     <p>Carrinho vazio</p>

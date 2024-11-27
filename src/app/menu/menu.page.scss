@@ -1,27 +1,145 @@
-/* Estilo para a comanda registrada */
+/* Remover fundo e sombra do toolbar */
+ion-toolbar {
+    --background: transparent !important; /* Fundo transparente */
+    --box-shadow: none !important; /* Remover qualquer sombra */
+    display: flex; /* Usar Flexbox */
+    justify-content: center; /* Centralizar o conteúdo horizontalmente */
+    align-items: center; /* Centralizar o conteúdo verticalmente */
+    position: relative; /* Garantir o layout correto */
+    padding: 0; /* Remover qualquer padding extra do toolbar */
+}
+
+/* Estilo para centralizar e estilizar a comanda */
 .comanda-registrada {
-    background-color: #007BFF;  /* Cor de fundo azul suave */
-    color: white;               /* Texto branco */
-    font-weight: bold;          /* Font weight em negrito */
-    padding: 4px 12px;          /* Menor padding e mais espaçamento lateral */
-    border-radius: 25px;        /* Bordas mais arredondadas */
-    font-size: 0.9rem;          /* Fonte ainda menor para não ocupar muito espaço */
-    display: flex;              /* Flexbox para alinhamento */
-    align-items: center;        /* Alinhar verticalmente */
-    gap: 8px;                   /* Menor espaçamento entre o ícone e o texto */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    margin-left: 10px;          /* Ajuste para afastar da borda esquerda */
-    margin-right: 10px;         /* Afastar da borda direita */
-  }
-  
-  .comanda-registrada ion-icon {
-    font-size: 1rem;            /* Tamanho reduzido do ícone */
-    color: white;               /* Cor do ícone branca */
-  }
-  
-  /* Efeito de hover */
-  .comanda-registrada:hover {
-    transform: scale(1.03);     /* Efeito de aumento suave */
+    background-color: #dda200; /* Cor do fundo amarelo */
+    color: white; /* Cor do texto */
+    font-weight: bold; /* Texto em negrito */
+    padding: 9px 8px; /* Espaçamento interno */
+    border-radius: 20px; /* Bordas arredondadas */
+    font-size: 14px; /* Tamanho da fonte */
+    display: flex; /* Flexbox para alinhamento do conteúdo */
+    align-items: center; /* Alinhar verticalmente */
+    justify-content: center; /* Centralizar horizontalmente */
+    gap: 8px; /* Espaço entre ícone e texto */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+    max-width: 300px; /* Definir largura máxima */
+    width: auto; /* Permitir que a largura se ajuste conforme necessário */
+    margin: 0 auto; /* Centralizar horizontalmente */
+}
+
+/* Ajuste para o ícone na comanda */
+.comanda-registrada ion-icon {
+    font-size: 18px; /* Tamanho do ícone */
+    color: white; /* Cor do ícone */
+}
+
+/* Estilo do cabeçalho das categorias */
+.categoria-header {
+    background-color: #0000002c; /* Fundo cinza claro */
+    border-radius: 5px; /* Bordas arredondadas */
+    margin: 8px auto; /* Margem superior e inferior */
+    padding: 4px; /* Reduzindo o padding vertical de 5px para 4px (redução de 10%) */
+    display: flex; /* Flexbox para alinhamento */
+    justify-content: center; /* Centralizar texto e ícone */
+    align-items: center; /* Centralizar itens verticalmente */
+    font-size: 13px; /* Diminui o tamanho da fonte de 18px para 16px (aproximadamente 10%) */
+    font-weight: bold; /* Negrito */
+    box-shadow: none !important; /* Remover sombra */
+    cursor: pointer; /* Cursor de clique */
+}
+
+/* Efeito ao passar o mouse sobre as categorias */
+.categoria-header:hover {
+    background-color: #0000003c; /* Fundo mais escuro ao passar o mouse */
+    transform: scale(1.02); /* Leve aumento */
     transition: transform 0.2s ease-in-out; /* Transição suave */
-  }
-  
+}
+
+/* Estilo dos ícones nas categorias */
+.categoria-header ion-icon {
+    font-size: 15px; /* Tamanho do ícone */
+    color: #333; /* Cor do ícone */
+}
+
+/* Estilo para os itens de produtos */
+ion-item {
+    --background: #0000002c !important; /* Fundo cinza claro */
+    border-radius: 10px; /* Bordas arredondadas */
+    margin: 5px 10px; /* Margens internas */
+    padding: 8px 12px; /* Espaçamento interno */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Ajuste para o título do produto */
+ion-item h2 {
+    font-size: 16px; /* Tamanho do título */
+    font-weight: bold; /* Negrito */
+    margin: 0;
+}
+
+/* Estilo para as descrições dos produtos */
+ion-item p {
+    font-size: 14px; /* Tamanho do texto */
+    margin: 2px 0; /* Espaçamento entre parágrafos */
+}
+
+/* Estilo do preço do produto */
+ion-item .preco {
+    color: #f0f0f0cb; /* Cor para destacar o preço */
+    font-weight: bold; /* Texto em negrito */
+    margin-top: 5px;
+}
+
+/* Indicadores de estoque */
+.disponivel {
+    color: green; /* Disponível */
+}
+
+.pouco-estoque {
+    color: orange; /* Pouco estoque */
+}
+
+.indisponivel {
+    color: red; /* Indisponível */
+    font-weight: bold; /* Destacar texto */
+}
+
+/* Estilo para o botão de adicionar ao carrinho */
+ion-button.adicionar-carrinho {
+    --background: #ffcc00 !important;  /* Cor de fundo amarela */
+    --background-hover: #ffcc00 !important;
+    --background-activated: #ffcc00 !important;
+    --background-focused: #ffcc00 !important;
+    --color: white !important; /* Texto branco */
+    --border-radius: 20px !important; /* Bordas arredondadas */
+    --box-shadow: none !important; /* Remover sombra */
+    --text-transform: none !important; /* Garantir que o texto não seja transformado em maiúsculas */
+    --font-weight: bold !important; /* Texto em negrito */
+    padding: 8px 12px !important; /* Ajuste de padding */
+    outline: none !important; /* Remover contorno */
+    border: none !important; /* Remover borda padrão */
+    margin: 4px !important; /* Espaçamento adicional */
+    position: relative;
+    transition: all 0.3s ease-in-out; /* Transição suave para qualquer alteração */
+}
+
+/* Efeito de expansão ao passar o mouse */
+ion-button.adicionar-carrinho:hover {
+    transform: scale(1.1); /* Expande o botão em 10% */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra suave */
+}
+
+/* Caso o botão esteja desabilitado */
+ion-button.adicionar-carrinho:disabled {
+    --background: #d3d3d3 !important; /* Cor cinza quando desabilitado */
+    --background-hover: #d3d3d3 !important;
+    --background-activated: #d3d3d3 !important;
+    --background-focused: #d3d3d3 !important;
+    --color: #888 !important; /* Texto cinza */
+    cursor: not-allowed !important; /* Cursor desabilitado */
+}
+
+/* Garantir que o botão mantenha a cor amarela */
+ion-button.adicionar-carrinho::part(native) {
+    background: #ffcc00 !important; /* Cor de fundo amarela */
+}

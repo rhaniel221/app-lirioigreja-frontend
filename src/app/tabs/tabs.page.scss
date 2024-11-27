@@ -1,1 +1,25 @@
+/* src/app/tabs/tabs.page.scss */
 
+ion-tab-button[tab="home"] {
+  background-color: transparent !important; /* Fundo transparente na aba "Início" */
+}
+
+ion-tab-button ion-icon {
+  color: #8c8c8c !important; /* Ícone em amarelo escuro */
+}
+
+ion-tab-button ion-label {
+  color: #8c8c8c !important; /* Texto em amarelo escuro */
+}
+
+ion-tab-button[tab="menu"] ion-icon,
+ion-tab-button[tab="carrinho"] ion-icon,
+ion-tab-button[tab="comanda"] ion-icon {
+  color: #8c8c8c !important; /* Ícones de outras abas (Menu, Carrinho, Comanda) em cinza */
+}
+
+ion-tab-button[tab="menu"] ion-label,
+ion-tab-button[tab="carrinho"] ion-label,
+ion-tab-button[tab="comanda"] ion-label {
+  color: #8c8c8c !important; /* Texto das outras abas (Menu, Carrinho, Comanda) em cinza */
+}

@@ -1,12 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Menu</ion-title>
-    <ion-note slot="end" class="ion-padding-end" *ngIf="comandaAtual">
-      <div class="comanda-registrada">
-        <ion-icon name="wallet-outline"></ion-icon>
-        Comanda: {{ comandaAtual.numero }}
-      </div>
-    </ion-note>
+    <ion-title style="display: none;"></ion-title> <!-- Esconde o título -->
+    <div class="comanda-registrada" *ngIf="comandaAtual">
+      <ion-icon name="wallet-outline"></ion-icon>
+      Comanda: {{ comandaAtual.numero }}
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -28,8 +26,8 @@
             <p *ngIf="produto.descricao">{{ produto.descricao }}</p>
             <p class="preco">R$ {{ produto.preco.toFixed(2) }}</p>
             <p [ngClass]="{
-              'disponivel': produto.quantidade_disponivel > 5,
-              'pouco-estoque': produto.quantidade_disponivel > 0 && produto.quantidade_disponivel <= 5,
+              'disponivel': produto.quantidade_disponivel > 15,
+              'pouco-estoque': produto.quantidade_disponivel > 0 && produto.quantidade_disponivel <= 15,
               'indisponivel': produto.quantidade_disponivel <= 0
             }">
               {{ produto.quantidade_disponivel > 0 ? 

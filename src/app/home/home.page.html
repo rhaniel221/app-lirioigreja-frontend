@@ -1,17 +1,18 @@
-<!-- src/app/home/home.page.html -->
 <ion-header>
-  <ion-toolbar>
-    <ion-title>INÍCIO</ion-title>
-  </ion-toolbar>
+  <img 
+    class="logo-header" 
+    src="https://meus-documentos-textract.s3.us-east-1.amazonaws.com/public/Logo-Lirio.png" 
+    alt="Logo"
+  />
 </ion-header>
 
 <ion-content>
-  <ion-item>
+  <ion-item class="comanda-input">
     <ion-label position="floating">Número da Comanda</ion-label>
     <ion-input [(ngModel)]="numeroComanda" type="number"></ion-input>
   </ion-item>
 
-  <ion-button expand="block" (click)="registrarComanda()">
+  <ion-button expand="block" class="registrar-comanda" (click)="registrarComanda()">
     REGISTRAR COMANDA
   </ion-button>
 </ion-content>

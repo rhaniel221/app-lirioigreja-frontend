@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ProdutosService } from '../services/produtos.service';
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-comanda',
@@ -8,14 +8,26 @@ import { ToastController, AlertController } from '@ionic/angular';
   styleUrls: ['./comanda.page.scss'],
 })
 export class ComandaPage {
-  comandaId: string = '';
-  itensComanda: any[] = [];
+  @ViewChild('comandaInput', { static: false }) comandaInput: IonInput | undefined;
+
+  comandaId: string = ''; // Campo para o número da comanda
+  itensComanda: any[] = []; // Itens retornados da consulta de comanda
 
   constructor(
     private produtosService: ProdutosService,
     private toastController: ToastController,
     private alertController: AlertController
   ) {}
+
+  ionViewWillEnter() {
+    // Reseta o modelo e o campo de entrada ao entrar na aba
+    this.comandaId = '';
+    this.itensComanda = [];
+    if (this.comandaInput) {
+      this.comandaInput.value = '';
+    }
+    console.log("Página de comanda resetada.");
+  }
 
   onInputChange(event: any) {
     this.comandaId = event.target.value;
@@ -75,7 +87,7 @@ export class ComandaPage {
   async presentToast(message: string, color: string = 'light') {
     const toast = await this.toastController.create({
       message,
-      duration: 2000,
+      duration: 1000,
       color: color, // Cor do toast
       position: 'middle', // Centraliza o toast na tela
       cssClass: 'custom-toast' // Classe CSS personalizada
