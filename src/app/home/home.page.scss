@@ -13,7 +13,7 @@ ion-header {
   margin: 0 auto; /* Centralizar horizontalmente */
   display: block; /* Certifica que a imagem é exibida como um bloco */
   position: relative; /* Posicionamento relativo para ajuste fino */
-  top: 5px; /* Ajuste fino para centralizar verticalmente */
+  top: 15px; /* Ajuste fino para centralizar verticalmente (aumentei 10% para 15px) */
 }
 
 /* Ajustar para desktop */
@@ -27,8 +27,8 @@ ion-header {
 
 /* Estilo para o campo de 'Número da Comanda' com fundo cinza */
 .comanda-input {
-  --background: #cecece00 !important; /* Fundo cinza claro */
-  --color: #ffffff; /* Cor do texto preta */
+  --background: #16161657 !important; /* Fundo cinza claro */
+  --color: #ffffff; /* Cor do texto branca */
   font-size: 19px !important; /* Tamanho da fonte */
   padding: 12px 8px; /* Ajustar o padding do campo */
   border-radius: 15px !important; /* Arredondamento do fundo */
@@ -39,29 +39,29 @@ ion-header {
 
 /* Estilo para o botão 'Registrar Comanda' */
 ion-button.registrar-comanda {
-  --background: #e7bb2b !important; /* Cor de fundo amarela */
-  --color: rgb(0, 0, 0) !important; /* Cor do texto branca */
-  --border-radius: 5px !important; /* Borda arredondada */
+  --background: #ffcc00 !important; /* Cor de fundo amarela */
+  --color: black !important; /* Cor do texto preta */
+  --border-radius: 20px !important; /* Bordas arredondadas */
   --box-shadow: none !important; /* Remover sombra */
-  height: 40px !important; /* Altura reduzida do botão */
-  font-size: 16px !important; /* Tamanho da fonte */
+  text-transform: none !important; /* Manter o texto em minúsculas */
   font-weight: bold !important; /* Texto em negrito */
-  width: 80% !important; /* Largura reduzida (20% menor) */
-  margin-left: auto; /* Centraliza o botão horizontalmente */
-  margin-right: auto;
-}
-
-ion-button.registrar-comanda ion-icon {
-  font-size: 20px !important; /* Reduzir o ícone em 20% */
+  padding: 8px 12px !important; /* Ajuste de padding */
+  outline: none !important; /* Remover contorno */
+  border: none !important; /* Remover borda padrão */
+  margin: 4px !important; /* Espaçamento adicional */
+  position: relative;
+  transition: all 0.3s ease-in-out; /* Transição suave para qualquer alteração */
 }
 
 ion-button.registrar-comanda:hover {
-  --background: #e0b200 !important; /* Cor de fundo amarela mais escura ao passar o mouse */
+  transform: scale(1.1); /* Expande o botão em 10% ao passar o mouse */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra suave */
 }
 
 ion-button.registrar-comanda:disabled {
-  --background: #d3d3d3 !important; /* Cor de fundo quando desabilitado */
-  --color: #e70000 !important;
+  --background: #0f0f0f !important; /* Cor cinza quando desabilitado */
+  --color: #ffffff !important; /* Texto cinza */
+  cursor: not-allowed !important; /* Cursor desabilitado */
 }
 
 /* Remover fundo e sombra do toolbar */

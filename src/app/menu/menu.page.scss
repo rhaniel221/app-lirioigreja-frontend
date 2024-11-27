@@ -67,7 +67,7 @@ ion-item {
     border-radius: 10px; /* Bordas arredondadas */
     margin: 5px 10px; /* Margens internas */
     padding: 8px 12px; /* Espaçamento interno */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    box-shadow: none !important; /* Remover sombra */
 }
 
 /* Ajuste para o título do produto */
@@ -106,7 +106,7 @@ ion-item .preco {
 
 /* Estilo para o botão de adicionar ao carrinho */
 ion-button.adicionar-carrinho {
-    --background: #ffcc00 !important;  /* Cor de fundo amarela */
+    --background: #ffcc00 !important; /* Cor de fundo amarela */
     --background-hover: #ffcc00 !important;
     --background-activated: #ffcc00 !important;
     --background-focused: #ffcc00 !important;
@@ -143,3 +143,9 @@ ion-button.adicionar-carrinho:disabled {
 ion-button.adicionar-carrinho::part(native) {
     background: #ffcc00 !important; /* Cor de fundo amarela */
 }
+
+/* Remover sombras do menu */
+ion-menu, ion-content {
+    --box-shadow: none !important; /* Remover qualquer sombra */
+}
+

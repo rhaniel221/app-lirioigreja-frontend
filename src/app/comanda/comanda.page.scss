@@ -1,0 +1,37 @@
+ion-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 20%; /* Aumenta a margem superior para 20% */
+  }
+  
+  .comanda-container {
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  ion-item {
+    --background: #20202057 !important;
+    --color: #ffffff !important;
+    --border-radius: 20px !important;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  ion-button {
+    --background: #ffcc00 !important;
+    --color: black !important;
+    --border-radius: 20px !important;
+    --box-shadow: none !important;
+  }
+  
+  .ion-padding-top-20 {
+    padding-top: 15%;
+  }
+  .button-container {
+    display: flex;
+    justify-content: center; /* Centraliza o botão horizontalmente */
+    width: 100%;
+    margin-bottom: 10px; /* Adiciona um pequeno espaçamento entre os botões */
+  }

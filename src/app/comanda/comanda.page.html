@@ -1,23 +1,25 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Comanda</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <!-- Campo de entrada para número da comanda -->
-  <ion-item>
-    <ion-label position="floating">Número da Comanda</ion-label>
-    <ion-input 
-      #comandaInput
-      [(ngModel)]="comandaId"
-      type="text"
-      (ionChange)="onInputChange($event)">
-    </ion-input>
-  </ion-item>
+  <div class="ion-padding-top-20 ion-text-center">
+    <!-- Campo de entrada para número da comanda -->
+    <ion-item>
+      <ion-label position="floating">Número da Comanda</ion-label>
+      <ion-input 
+        #comandaInput
+        [(ngModel)]="comandaId"
+        type="text"
+        (ionChange)="onInputChange($event)">
+      </ion-input>
+    </ion-item>
 
-  <!-- Botão de Buscar Comanda -->
-  <ion-button expand="full" (click)="buscarComanda()">Buscar Comanda</ion-button>
+    <!-- Botão de Buscar Comanda -->
+    <div class="button-container">
+      <ion-button 
+        style="--background: #ffcc00 !important; --color: black !important; --border-radius: 60px !important; --box-shadow: none !important; width: 99%;" 
+        (click)="buscarComanda()">
+        Buscar Comanda
+      </ion-button>
+    </div>
+  </div>
 
   <!-- Lista de itens da comanda -->
   <ion-list *ngIf="itensComanda.length > 0">
@@ -31,8 +33,20 @@
     </ion-item>
   </ion-list>
 
+  <!-- Exibição do valor total -->
+  <div *ngIf="itensComanda.length > 0" class="ion-padding ion-text-right">
+    <p style="font-size: 1.2rem; font-weight: bold;">Total: R$ {{ calcularTotal().toFixed(2) }}</p>
+  </div>
+
   <!-- Botão de Limpar Comanda -->
-  <ion-button color="danger" expand="full" (click)="limparComanda()">Limpar Comanda</ion-button>
+  <div class="button-container">
+    <ion-button 
+      style="--background: #ffcc00 !important; --color: black !important; --border-radius: 60px !important; --box-shadow: none !important; width: 99%;" 
+      color="danger" 
+      (click)="limparComanda()">
+      Limpar Comanda
+    </ion-button>
+  </div>
 
   <!-- Mensagem para quando não houver itens -->
   <div *ngIf="itensComanda.length === 0" class="ion-padding ion-text-center">

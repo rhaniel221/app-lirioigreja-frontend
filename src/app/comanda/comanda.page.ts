@@ -46,6 +46,10 @@ export class ComandaPage {
     try {
       this.itensComanda = await this.produtosService.consultarComanda(this.comandaId);
       console.log("Itens da comanda obtidos:", this.itensComanda);
+
+      if (this.itensComanda.length === 0) {
+        this.apresentarMensagemComandaVazia();
+      }
     } catch (error) {
       console.error("Erro ao buscar a comanda:", error);
       this.presentToast('Erro ao buscar a comanda', 'danger');
@@ -93,5 +97,18 @@ export class ComandaPage {
       cssClass: 'custom-toast' // Classe CSS personalizada
     });
     toast.present();
+  }
+
+  async apresentarMensagemComandaVazia() {
+    const alert = await this.alertController.create({
+      header: 'Comanda Vazia',
+      message: 'A comanda não possui itens.',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  calcularTotal(): number {
+    return this.itensComanda.reduce((total, item) => total + (item.preco * item.quantidade), 0);
   }
 }
