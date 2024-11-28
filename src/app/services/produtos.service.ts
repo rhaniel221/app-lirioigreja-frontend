@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class ProdutosService {
-  private apiUrl = 'http://127.0.0.1:5000'; // URL do backend
+  private apiUrl = 'http://127.0.0.1:5000';
   private comandaAtual: any = null;
 
   constructor(private http: HttpClient) {}
@@ -46,12 +46,10 @@ export class ProdutosService {
     }
   }
 
-  async removerDoCarrinho(dados: { comanda_id: number; produto_id: number }) {
+  async removerItemDoCarrinho(dados: { comanda_id: number; produto_id: number }) {
     try {
       const response = await firstValueFrom(
-        this.http.delete(`${this.apiUrl}/carrinho`, {
-          body: dados, // Envia o corpo com os dados necessários
-        })
+        this.http.delete(`${this.apiUrl}/carrinho`, { body: dados })
       );
       console.log('Item removido do carrinho:', response);
       return response;
@@ -60,7 +58,6 @@ export class ProdutosService {
       throw error;
     }
   }
-  
 
   async getCarrinho(comandaId: number): Promise<any[]> {
     try {
@@ -76,10 +73,10 @@ export class ProdutosService {
   }
 
   limparCarrinho() {
-    localStorage.removeItem('carrinho'); // Limpa qualquer carrinho local
+    localStorage.removeItem('carrinho');
   }
 
-  // API de Categorias e Produtos
+  // Categorias e Produtos
   async getCategorias(): Promise<any[]> {
     try {
       const response = await firstValueFrom(
@@ -108,6 +105,7 @@ export class ProdutosService {
     }
   }
 
+  // Métodos relacionados à Comanda
   async registrarComanda(numero: string) {
     try {
       const response = await firstValueFrom(
@@ -117,6 +115,32 @@ export class ProdutosService {
       return response;
     } catch (error) {
       console.error('Erro ao registrar comanda:', error);
+      throw error;
+    }
+  }
+
+  async consultarComanda(numero: string) {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<any[]>(`${this.apiUrl}/consultar-comanda?numero=${numero}`)
+      );
+      console.log('Consulta da comanda:', response);
+      return response;
+    } catch (error) {
+      console.error('Erro ao consultar comanda:', error);
+      return [];
+    }
+  }
+
+  async limparComanda(numero: string) {
+    try {
+      const response = await firstValueFrom(
+        this.http.delete(`${this.apiUrl}/limpar-comanda?numero=${numero}`)
+      );
+      console.log('Comanda limpa:', response);
+      return response;
+    } catch (error) {
+      console.error('Erro ao limpar comanda:', error);
       throw error;
     }
   }
@@ -151,32 +175,6 @@ export class ProdutosService {
       return response;
     } catch (error) {
       console.error('Erro ao finalizar pedido:', error);
-      throw error;
-    }
-  }
-
-  async consultarComanda(numero: string) {
-    try {
-      const response = await firstValueFrom(
-        this.http.get<any[]>(`${this.apiUrl}/consultar-comanda?numero=${numero}`)
-      );
-      console.log('Consulta da comanda:', response);
-      return response;
-    } catch (error) {
-      console.error('Erro ao consultar comanda:', error);
-      return [];
-    }
-  }
-
-  async limparComanda(numero: string) {
-    try {
-      const response = await firstValueFrom(
-        this.http.delete(`${this.apiUrl}/limpar-comanda?numero=${numero}`)
-      );
-      console.log('Comanda limpa:', response);
-      return response;
-    } catch (error) {
-      console.error('Erro ao limpar comanda:', error);
       throw error;
     }
   }

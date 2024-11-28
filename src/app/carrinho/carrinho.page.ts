@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProdutosService } from '../services/produtos.service';
 import { ToastController, NavController } from '@ionic/angular';
+import { firstValueFrom } from 'rxjs';  // Corrigido para importar
 
 @Component({
   selector: 'app-carrinho',
@@ -19,85 +20,80 @@ export class CarrinhoPage {
     private navController: NavController
   ) {}
 
-  async ionViewWillEnter() {
-    await this.carregarDados();
+  ionViewWillEnter() {
+    this.carregarDados();
   }
 
   async carregarDados() {
     try {
       this.comandaAtual = this.produtosService.getComandaAtual();
-
-      if (!this.comandaAtual?.id) {
-        this.presentToast('Erro: Comanda não identificada.', 'danger');
-        return;
+      if (this.comandaAtual) {
+        this.itensCarrinho = await this.produtosService.getCarrinho(this.comandaAtual.id);
+      } else {
+        // Se a comanda não estiver disponível, exibe uma mensagem ou trata o erro
+        this.presentToast("Comanda não encontrada", 'danger');
       }
-
-      this.itensCarrinho = await this.produtosService.getCarrinho(this.comandaAtual.id);
-      console.log('Itens no carrinho:', this.itensCarrinho);
     } catch (error) {
       console.error('Erro ao carregar dados do carrinho:', error);
-      this.presentToast('Erro ao carregar carrinho.', 'danger');
+      this.presentToast("Erro ao carregar dados", 'danger');
+    }
+  }
+
+  async removerItemDoCarrinho(item: any) {
+    try {
+      const dados = {
+        comanda_id: this.comandaAtual.id,
+        produto_id: item.id,
+      };
+
+      // Removendo o item do carrinho via ProdutoService
+      await this.produtosService.removerItemDoCarrinho(dados);  // Corrigido para chamar 'removerItemDoCarrinho'
+      this.carregarDados(); // Recarrega os itens do carrinho após remoção
+      this.presentToast('Item removido do carrinho', 'success');
+    } catch (error) {
+      console.error('Erro ao remover item do carrinho:', error);
+      this.presentToast('Erro ao remover item do carrinho', 'danger');
     }
   }
 
   calcularTotal(): number {
-    return this.itensCarrinho.reduce((total, item) => {
-      const preco = item.preco || 0; // Certifica que o preço existe
-      const quantidade = item.quantidade || 0; // Certifica que a quantidade existe
-      return total + preco * quantidade;
-    }, 0);
-  }
-
-  // src/app/carrinho/carrinho.page.ts
-async removerDoCarrinho(item: any) {
-  try {
-    await this.produtosService.removerDoCarrinho({
-      comanda_id: this.comandaAtual.id,
-      produto_id: item.id,
-    });
-    await this.carregarDados();
-    this.presentToast('Item removido com sucesso', 'success');
-  } catch (error) {
-    console.error('Erro ao remover item do carrinho:', error);
-    this.presentToast('Erro ao remover item.', 'danger');
-  }
-}
-
-  async finalizarPedido() {
-    try {
-      if (!this.comandaAtual?.id) {
-        this.presentToast('Erro: Comanda não identificada.', 'danger');
-        return;
-      }
-
-      if (this.itensCarrinho.length === 0) {
-        this.presentToast('Erro: Carrinho vazio.', 'danger');
-        return;
-      }
-
-      const response = await this.produtosService.finalizarPedido(this.comandaAtual.id);
-      console.log('Pedido finalizado:', response);
-
-      this.presentToast('Pedido finalizado com sucesso!', 'success');
-
-      // Redireciona para a home após 2 segundos
-      setTimeout(() => {
-        this.navController.navigateRoot('/tabs/home');
-      }, 2000);
-    } catch (error: any) {
-      console.error('Erro ao finalizar pedido:', error);
-      const errorMessage = (error as any)?.message || 'Erro desconhecido';
-      this.presentToast(`Erro ao finalizar pedido: ${errorMessage}`, 'danger');
-    }
+    return this.itensCarrinho.reduce((total, item) => total + item.preco * item.quantidade, 0);
   }
 
   async presentToast(message: string, color: string = 'light') {
     const toast = await this.toastController.create({
       message,
-      duration: 1500,
+      duration: 1000,
       color: color,
       position: 'middle',
     });
-    await toast.present();
+    toast.present();
+  }
+
+  async finalizarPedido() {
+    try {
+      if (!this.comandaAtual?.id) {
+        this.presentToast("Erro: Comanda não identificada", 'danger');
+        return;
+      }
+
+      if (this.itensCarrinho.length === 0) {
+        this.presentToast("Erro: Carrinho vazio", 'danger');
+        return;
+      }
+
+      const response = await this.produtosService.finalizarPedido(this.comandaAtual.id);
+      console.log('Pedido finalizado:', response);
+      
+      this.presentToast("Pedido finalizado com sucesso", 'success');
+      
+      // Redireciona para a home após 2 segundos
+      setTimeout(() => {
+        this.navController.navigateRoot('/tabs/home');
+      }, 1000);
+    } catch (error: any) {
+      console.error('Erro ao finalizar pedido:', error);
+      this.presentToast("Erro ao finalizar pedido: " + (error.message || "Erro desconhecido"), 'danger');
+    }
   }
 }
