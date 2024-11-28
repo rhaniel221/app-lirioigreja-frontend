@@ -24,7 +24,7 @@ export class HomePage {
 
   async registrarComanda() {
     if (!this.numeroComanda) {
-      this.presentToast('Número da comanda é obrigatório', 'warning');
+      this.mostrarToast('Número da comanda é obrigatório', 'aviso');
       return;
     }
 
@@ -33,29 +33,25 @@ export class HomePage {
 
       if (response.comanda) {
         this.produtosService.setComandaAtual(response.comanda);
-        await this.presentToast('Comanda registrada com sucesso', 'success');
-        
-        // Limpa o campo após registrar com sucesso
-        this.numeroComanda = '';
-        
-        // Navega para o menu
-        this.router.navigate(['/tabs/menu']);
+        await this.mostrarToast('Comanda registrada com sucesso', 'sucesso');
+        this.numeroComanda = ''; // Limpa o campo após registrar com sucesso
+        this.router.navigate(['/tabs/menu']); // Navega para o menu
       } else {
-        this.presentToast('Comanda não encontrada', 'warning');
+        this.mostrarToast('Comanda não encontrada', 'aviso');
       }
     } catch (error) {
       console.error('Erro ao registrar comanda:', error);
-      this.presentToast('Erro ao registrar comanda', 'danger');
+      this.mostrarToast('Erro ao registrar comanda', 'erro');
     }
   }
 
-  async presentToast(message: string, color: string = 'light') {
+  async mostrarToast(mensagem: string, tipo: string = 'normal') {
     const toast = await this.toastController.create({
-      message,
+      message: mensagem,
       duration: 1000,
-      color: color,
+      color: tipo,
       position: 'middle',
-      cssClass: 'custom-toast'
+      cssClass: 'custom-toast',
     });
     toast.present();
   }

@@ -2,30 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ProdutosService } from '../services/produtos.service';
 import { ToastController } from '@ionic/angular';
 
-// Interfaces para melhor tipagem
-interface Produto {
-  id: number;
-  nome: string;
-  preco: number;
-  descricao?: string;
-  quantidade_disponivel: number;
-  categoria_id: number;
-}
-
-interface Categoria {
-  id: number;
-  nome: string;
-}
-
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
   styleUrls: ['./menu.page.scss'],
 })
 export class MenuPage implements OnInit {
-  categorias: Categoria[] = [];
-  produtosPorCategoria: { [key: number]: Produto[] } = {};
-  categoriasExpandidas: { [key: number]: boolean } = {};
+  categorias: any[] = [];
+  produtos: any[] = [];
+  categoriaSelecionada: string = '';
   comandaAtual: any = null;
 
   constructor(
@@ -46,70 +31,78 @@ export class MenuPage implements OnInit {
     try {
       // Carregar categorias
       this.categorias = await this.produtosService.getCategorias();
-      console.log('Categorias carregadas:', this.categorias);
-      
-      // Inicializar todas as categorias como não expandidas
-      this.categorias.forEach(categoria => {
-        this.categoriasExpandidas[categoria.id] = false;
-      });
-
-      // Pré-carregar produtos de todas as categorias
-      for (const categoria of this.categorias) {
-        const produtos = await this.produtosService.getProdutos(categoria.id);
-        this.produtosPorCategoria[categoria.id] = produtos;
-        console.log(`Produtos da categoria ${categoria.nome}:`, produtos);
+      if (this.categorias.length > 0) {
+        this.atualizarProdutos(this.categorias[0].id); // Selecionar a primeira categoria como padrão
+        this.categoriaSelecionada = this.categorias[0].id;
       }
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
-      await this.mostrarErro('Erro ao carregar dados');
+      this.mostrarErro('Erro ao carregar categorias.');
     }
   }
 
-  // Método para expandir/recolher categorias
-  toggleCategoria(categoriaId: number) {
-    this.categoriasExpandidas[categoriaId] = !this.categoriasExpandidas[categoriaId];
-  }
-
-  // Método para verificar se uma categoria está expandida
-  isExpanded(categoriaId: number): boolean {
-    return this.categoriasExpandidas[categoriaId] || false;
-  }
-
-  async adicionarAoCarrinho(produto: Produto) {
+  async atualizarProdutos(categoriaId: number) {
     try {
-      if (produto.quantidade_disponivel <= 0) {
-        await this.mostrarErro('Produto indisponível no momento');
+      // Carregar produtos da categoria selecionada
+      this.produtos = await this.produtosService.getProdutos(categoriaId);
+    } catch (error) {
+      console.error('Erro ao carregar produtos:', error);
+      this.mostrarErro('Erro ao carregar produtos.');
+    }
+  }
+
+  async onCategoriaClicada(categoria: any) {
+    this.categoriaSelecionada = categoria.id.toString();
+    await this.atualizarProdutos(categoria.id);
+  }
+
+  async adicionarAoCarrinho(produto: any) {
+    try {
+      if (!this.comandaAtual) {
+        await this.mostrarErro('Comanda não encontrada.');
         return;
       }
 
-      await this.produtosService.adicionarAoCarrinho(produto);
-      produto.quantidade_disponivel--; // Atualiza quantidade local
-      
-      const toast = await this.toastController.create({
-        message: 'Adicionado com sucesso!',
-        duration: 800,
-        position: 'middle',
-        cssClass: 'custom-toast'
+      // Adicionar produto ao carrinho via serviço
+      await this.produtosService.adicionarAoCarrinho({
+        comanda_id: this.comandaAtual.id,
+        produto_id: produto.id,
+        quantidade: 1,
       });
-      await toast.present();
-    } catch (err: any) { // Tipando o erro como 'any' para evitar problemas com o TypeScript
-      console.error('Erro ao adicionar ao carrinho:', err);
-      if (err.error?.error === 'Quantidade insuficiente em estoque') {
-        await this.mostrarErro('Quantidade insuficiente em estoque');
-      } else {
-        await this.mostrarErro('Erro ao adicionar ao carrinho');
-      }
+
+      // Atualizar quantidade disponível localmente
+      produto.quantidade_disponivel--;
+
+      // Exibir mensagem de sucesso
+      await this.mostrarToast('Produto adicionado ao carrinho!');
+    } catch (error) {
+      console.error('Erro ao adicionar ao carrinho:', error);
+      this.mostrarErro('Erro ao adicionar ao carrinho.');
     }
   }
 
   private async mostrarErro(mensagem: string) {
+    await this.mostrarToast(mensagem, 'danger');
+  }
+
+  private async mostrarToast(mensagem: string, tipo: string = 'success') {
     const toast = await this.toastController.create({
       message: mensagem,
       duration: 1000,
       position: 'middle',
-      color: 'danger',
-      cssClass: 'custom-toast'
+      color: tipo,
     });
     await toast.present();
+  }
+
+  // Mapeia ícones para cada categoria
+  getIconForCategoria(nome: string): string {
+    const iconsMap: { [key: string]: string } = {
+      Cafés: 'cafe-outline',
+      Bebidas: 'wine-outline',
+      Doces: 'ice-cream-outline',
+      Salgados: 'pizza-outline',
+    };
+    return iconsMap[nome] || 'list-outline';
   }
 }

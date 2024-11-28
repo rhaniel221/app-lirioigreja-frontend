@@ -1,103 +1,103 @@
-/* Remover fundo do cabeçalho e título */
+/* Importar fontes modernas */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Estilo global para fontes */
+body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Remover fundo do cabeçalho */
 ion-header {
-  --background: transparent !important; /* Fundo transparente */
-  --box-shadow: none !important; /* Remover qualquer sombra */
-  padding-bottom: 0px !important; /* Remover qualquer padding inferior */
-  box-shadow: none !important; /* Remover qualquer sombra do cabeçalho */
+  --background: transparent !important;
+  padding-bottom: 0px !important;
 }
 
-/* Ajustar tamanho da imagem do logo */
+/* Centralizar o logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
 .logo-header {
-  max-width: 60%; /* Aumentado 5% para o mobile */
-  max-height: 60%; /* Aumentado 5% para o mobile */
-  margin: 0 auto; /* Centralizar horizontalmente */
-  display: block; /* Certifica que a imagem é exibida como um bloco */
-  position: relative; /* Posicionamento relativo para ajuste fino */
-  top: 15px; /* Ajuste fino para centralizar verticalmente (aumentei 10% para 15px) */
+  max-width: 150px;
+  max-height: 150px;
+  animation: fade-in 1.5s ease-in-out;
 }
 
-/* Ajustar para desktop */
-@media (min-width: 768px) {
-  .logo-header {
-    max-width: 30%; /* Reduz a largura da imagem em telas maiores */
-    max-height: 30%; /* Ajusta a altura proporcionalmente */
-    top: 0px; /* Remove o deslocamento vertical */
-  }
+/* Centralizar os elementos da busca */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 150px);
+  padding: 20px;
 }
 
-/* Estilo para o campo de 'Número da Comanda' com fundo cinza */
-.comanda-input {
-  --background: #16161657 !important; /* Fundo cinza claro */
-  --color: #ffffff; /* Cor do texto branca */
-  font-size: 19px !important; /* Tamanho da fonte */
-  padding: 12px 8px; /* Ajustar o padding do campo */
-  border-radius: 15px !important; /* Arredondamento do fundo */
-  box-shadow: none !important; /* Remover qualquer sombra */
-  width: 95% !important; /* Diminuir a largura do campo em 5% (uniformemente em ambos os lados) */
-  margin: 0 auto; /* Centralizar o campo na tela */
-}
-
-/* Estilo para o botão 'Registrar Comanda' */
-ion-button.registrar-comanda {
-  --background: #ffcc00 !important; /* Cor de fundo amarela */
-  --color: black !important; /* Cor do texto preta */
-  --border-radius: 20px !important; /* Bordas arredondadas */
-  --box-shadow: none !important; /* Remover sombra */
-  text-transform: none !important; /* Manter o texto em minúsculas */
-  font-weight: bold !important; /* Texto em negrito */
-  padding: 8px 12px !important; /* Ajuste de padding */
-  outline: none !important; /* Remover contorno */
-  border: none !important; /* Remover borda padrão */
-  margin: 4px !important; /* Espaçamento adicional */
+.search-input-wrapper {
+  --background: #3131310c !important;
+  --color: #ffffff;
+  font-size: 19px !important;
+  padding: 12px;
+  border-radius: 15px !important;
+  box-shadow: none !important;
+  width: 80% !important;
+  margin-bottom: 15px;
   position: relative;
-  transition: all 0.3s ease-in-out; /* Transição suave para qualquer alteração */
+  display: flex;
+  align-items: center;
 }
 
-ion-button.registrar-comanda:hover {
-  transform: scale(1.1); /* Expande o botão em 10% ao passar o mouse */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra suave */
+.search-input-wrapper .search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 20px;
+  color: #ffffff;
 }
 
-ion-button.registrar-comanda:disabled {
-  --background: #0f0f0f !important; /* Cor cinza quando desabilitado */
-  --color: #ffffff !important; /* Texto cinza */
-  cursor: not-allowed !important; /* Cursor desabilitado */
+.search-input-wrapper ion-input {
+  border-radius: inherit !important;
+  width: 100%;
+  text-align: center;
+  font-size: 16px !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  background: none;
+  border: none;
+  padding-left: 40px; /* Espaço para o ícone */
 }
 
-/* Remover fundo e sombra do toolbar */
-ion-toolbar {
-  --background: transparent !important; /* Fundo transparente no toolbar */
-  --box-shadow: none !important; /* Remover qualquer sombra */
+.search-button {
+  --background: #ffcc00 !important;
+  --color: black !important;
+  --border-radius: 10px !important;
+  font-weight: bold !important;
+  width: 90%;
+  padding: 12px 0;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Remover qualquer borda ou sombra no item */
-ion-item {
-  --background: transparent !important; /* Fundo transparente no item */
-  border: none !important; /* Remover borda */
-  box-shadow: none !important; /* Remover sombra */
-  border-radius: 15px !important; /* Arredondar o item */
-  overflow: hidden; /* Garantir que o conteúdo não ultrapasse o arredondamento */
+.search-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo para o campo "Número da Comanda" */
-ion-item ion-label {
-  font-size: 16px !important; 
-  color: #ffffff !important; /* Cor branca para o label */
+.search-button:active {
+  transform: scale(0.98);
 }
 
-ion-input {
-  font-size: 16px !important; /* Ajustar o tamanho da fonte do input */
-  padding: 12px 8px; /* Ajustar o padding do campo de input */
-  border-radius: 15px !important; /* Aplicar o arredondamento ao campo de input */
-  box-shadow: none !important; /* Remover qualquer sombra do input */
-}
-
-/* Remover qualquer sombra de outros elementos com sombras */
-ion-card, ion-list, ion-item-divider, ion-toggle, ion-radio-group, ion-checkbox {
-  box-shadow: none !important; /* Remover sombra de outros elementos */
-}
-
-/* Garantir que as sombras estejam removidas de qualquer elemento adicional */
-* {
-  box-shadow: none !important; /* Remover sombra globalmente de todos os elementos */
+/* Animações */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title style="display: none;"></ion-title> <!-- Esconde o título -->
     <div class="comanda-registrada" *ngIf="comandaAtual">
       <ion-icon name="wallet-outline"></ion-icon>
       Comanda: {{ comandaAtual.numero }}
@@ -9,42 +8,44 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <div *ngFor="let categoria of categorias">
-      <ion-item (click)="toggleCategoria(categoria.id)" class="categoria-header">
-        <ion-label>{{ categoria.nome }}</ion-label>
-        <ion-icon 
-          slot="end" 
-          [name]="isExpanded(categoria.id) ? 'chevron-up' : 'chevron-down'">
-        </ion-icon>
-      </ion-item>
-
-      <div *ngIf="isExpanded(categoria.id)">
-        <ion-item *ngFor="let produto of produtosPorCategoria[categoria.id]">
-          <ion-label>
-            <h2>{{ produto.nome }}</h2>
-            <p *ngIf="produto.descricao">{{ produto.descricao }}</p>
-            <p class="preco">R$ {{ produto.preco.toFixed(2) }}</p>
-            <p [ngClass]="{
-              'disponivel': produto.quantidade_disponivel > 15,
-              'pouco-estoque': produto.quantidade_disponivel > 0 && produto.quantidade_disponivel <= 15,
-              'indisponivel': produto.quantidade_disponivel <= 0
-            }">
-              {{ produto.quantidade_disponivel > 0 ? 
-                 'Disponível: ' + produto.quantidade_disponivel :
-                 'Indisponível' }}
-            </p>
-          </ion-label>
-          <ion-button 
-            class="adicionar-carrinho" 
-            slot="end" 
-            (click)="adicionarAoCarrinho(produto)"
-            [disabled]="produto.quantidade_disponivel <= 0"
-            [color]="produto.quantidade_disponivel <= 0 ? 'medium' : 'primary'">
-            {{ produto.quantidade_disponivel > 0 ? 'Adicionar' : 'Indisponível' }}
-          </ion-button>
-        </ion-item>
-      </div>
+  <!-- Categorias -->
+  <div class="categorias-container">
+    <div
+      class="categoria-card"
+      *ngFor="let categoria of categorias"
+      [class.selected]="categoria.id === categoriaSelecionada"
+      (click)="onCategoriaClicada(categoria)"
+    >
+      <ion-icon [name]="getIconForCategoria(categoria.nome)"></ion-icon>
+      <span>{{ categoria.nome }}</span>
     </div>
-  </ion-list>
+  </div>
+
+  <!-- Produtos -->
+  <div class="produtos-container">
+    <ion-item *ngFor="let produto of produtos">
+      <ion-label>
+        <h2>{{ produto.nome }}</h2>
+        <p>{{ produto.descricao }}</p>
+        <p>R$ {{ produto.preco.toFixed(2) }}</p>
+        <p [ngClass]="{
+          'disponivel': produto.quantidade_disponivel > 15,
+          'pouco-estoque': produto.quantidade_disponivel > 0 && produto.quantidade_disponivel <= 15,
+          'indisponivel': produto.quantidade_disponivel <= 0
+        }">
+          {{ produto.quantidade_disponivel > 0 ? 
+             'Disponível: ' + produto.quantidade_disponivel : 
+             'Indisponível' }}
+        </p>
+      </ion-label>
+      <ion-button
+        slot="end"
+        [disabled]="produto.quantidade_disponivel <= 0"
+        (click)="adicionarAoCarrinho(produto)"
+      >
+        <ion-icon slot="start" name="cart-outline"></ion-icon>
+        {{ produto.quantidade_disponivel > 0 ? 'Adicionar' : 'Indisponível' }}
+      </ion-button>
+    </ion-item>
+  </div>
 </ion-content>

@@ -1,16 +1,18 @@
 <ion-header>
-  <img 
-    class="logo-header" 
-    src="assets/Logo-Lirio.png" alt="Logo" />  <!-- Caminho para a imagem local -->
+  <div class="logo-container">
+    <img class="logo-header" src="assets/Logo-Lirio.png" alt="Logo">
+  </div>
 </ion-header>
 
 <ion-content>
-  <ion-item class="comanda-input">
-    <ion-label position="floating">Número da Comanda</ion-label>
-    <ion-input [(ngModel)]="numeroComanda" type="number"></ion-input>
-  </ion-item>
+  <div class="search-container">
+    <div class="search-input-wrapper">
+      <ion-icon name="search-outline" class="search-icon"></ion-icon>
+      <ion-input [(ngModel)]="numeroComanda" type="text" placeholder="Número da Comanda" required></ion-input>
+    </div>
 
-  <ion-button expand="block" class="registrar-comanda" (click)="registrarComanda()">
-    REGISTRAR COMANDA
-  </ion-button>
+    <ion-button class="search-button" expand="block" (click)="registrarComanda()">
+      REGISTRAR COMANDA
+    </ion-button>
+  </div>
 </ion-content>

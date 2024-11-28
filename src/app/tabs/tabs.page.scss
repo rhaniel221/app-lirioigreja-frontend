@@ -1,25 +1,62 @@
-/* src/app/tabs/tabs.page.scss */
-
-ion-tab-button[tab="home"] {
-  background-color: transparent !important; /* Fundo transparente na aba "Início" */
+/* Estilo para o tab-bar */
+.custom-tab-bar {
+  background: linear-gradient(to right, #1c1c1c, #292929); /* Gradiente escuro */
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.4); /* Sombra no topo do tab-bar */
+  border-top: 1px solid #444; /* Borda superior */
+  height: 70px; /* Altura ajustada */
+  display: flex;
+  justify-content: space-around; /* Espaço uniforme entre os botões */
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 0;
 }
 
-ion-tab-button ion-icon {
-  color: #8c8c8c !important; /* Ícone em amarelo escuro */
+/* Estilo para os botões das abas */
+.custom-tab-bar ion-tab-button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #8c8c8c; /* Cor dos ícones e texto padrão */
+  font-size: 12px;
+  transition: all 0.3s ease;
 }
 
-ion-tab-button ion-label {
-  color: #8c8c8c !important; /* Texto em amarelo escuro */
+/* Estilo para o ícone dentro do botão */
+.custom-tab-bar ion-tab-button ion-icon {
+  font-size: 22px; /* Tamanho do ícone */
+  margin-bottom: 4px; /* Espaçamento entre o ícone e o texto */
+  transition: transform 0.3s ease;
 }
 
-ion-tab-button[tab="menu"] ion-icon,
-ion-tab-button[tab="carrinho"] ion-icon,
-ion-tab-button[tab="comanda"] ion-icon {
-  color: #8c8c8c !important; /* Ícones de outras abas (Menu, Carrinho, Comanda) em cinza */
+/* Aba ativa */
+.custom-tab-bar ion-tab-button.tab-selected {
+  color: #ffcc00 !important; /* Cor amarela para aba ativa */
 }
 
-ion-tab-button[tab="menu"] ion-label,
-ion-tab-button[tab="carrinho"] ion-label,
-ion-tab-button[tab="comanda"] ion-label {
-  color: #8c8c8c !important; /* Texto das outras abas (Menu, Carrinho, Comanda) em cinza */
+.custom-tab-bar ion-tab-button.tab-selected ion-icon {
+  transform: scale(1.2); /* Ícone maior na aba ativa */
+}
+
+/* Animação de clique */
+.custom-tab-bar ion-tab-button:active {
+  transform: translateY(-3px); /* Animação de "pressionar" */
+  transition: transform 0.1s ease;
+}
+
+/* Feedback hover */
+.custom-tab-bar ion-tab-button:hover {
+  background: rgba(255, 204, 0, 0.1); /* Fundo levemente amarelo ao passar o mouse */
+  border-radius: 10px;
+  color: #ffcc00; /* Realce amarelo no hover */
+}
+
+/* Reservar espaço para o tab-bar */
+ion-content {
+  margin-bottom: 70px; /* Ajusta o espaço abaixo do conteúdo */
+  background: #121212; /* Fundo do conteúdo para destacar o tab-bar */
 }
