@@ -1,19 +1,17 @@
-// src/app/services/produtos.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProdutosService {
-  private apiUrl = 'http://127.0.0.1:5000';
-  private carrinho: any[] = [];
+  private apiUrl = 'http://127.0.0.1:5000'; // URL do backend
   private comandaAtual: any = null;
 
   constructor(private http: HttpClient) {}
 
-  // Métodos de Gestão da Comanda
+  // Gestão da Comanda
   setComandaAtual(comanda: any) {
     this.comandaAtual = comanda;
     localStorage.setItem('comandaAtual', JSON.stringify(comanda));
@@ -34,48 +32,54 @@ export class ProdutosService {
     localStorage.removeItem('comandaAtual');
   }
 
-  // Métodos de Gestão do Carrinho
-  adicionarAoCarrinho(produto: any) {
-    console.log('Adicionando ao carrinho:', produto);
-    const itemExistente = this.carrinho.find(item => item.id === produto.id);
-    if (itemExistente) {
-      itemExistente.quantidade = (itemExistente.quantidade || 1) + 1;
-    } else {
-      this.carrinho.push({ ...produto, quantidade: 1 });
-    }
-    this.salvarCarrinhoLocal();
-  }
-
-  removerDoCarrinho(item: any) {
-    const index = this.carrinho.findIndex(i => i.id === item.id);
-    if (index > -1) {
-      this.carrinho.splice(index, 1);
-      this.salvarCarrinhoLocal();
+  // Carrinho
+  async adicionarAoCarrinho(dados: { comanda_id: number; produto_id: number; quantidade: number }) {
+    try {
+      const response = await firstValueFrom(
+        this.http.post(`${this.apiUrl}/carrinho`, dados)
+      );
+      console.log('Produto adicionado ao carrinho:', response);
+      return response;
+    } catch (error) {
+      console.error('Erro ao adicionar ao carrinho:', error);
+      throw error;
     }
   }
 
-  getCarrinho() {
-    this.carregarCarrinhoLocal();
-    return this.carrinho;
+  async removerDoCarrinho(dados: { comanda_id: number; produto_id: number }) {
+    try {
+      const response = await firstValueFrom(
+        this.http.delete(`${this.apiUrl}/carrinho`, {
+          body: dados, // Envia o corpo com os dados necessários
+        })
+      );
+      console.log('Item removido do carrinho:', response);
+      return response;
+    } catch (error) {
+      console.error('Erro ao remover item do carrinho:', error);
+      throw error;
+    }
+  }
+  
+
+  async getCarrinho(comandaId: number): Promise<any[]> {
+    try {
+      const response = await firstValueFrom(
+        this.http.get<any[]>(`${this.apiUrl}/carrinho?comanda_id=${comandaId}`)
+      );
+      console.log('Itens do carrinho obtidos:', response);
+      return response || [];
+    } catch (error) {
+      console.error('Erro ao buscar itens do carrinho:', error);
+      return [];
+    }
   }
 
   limparCarrinho() {
-    this.carrinho = [];
-    this.salvarCarrinhoLocal();
+    localStorage.removeItem('carrinho'); // Limpa qualquer carrinho local
   }
 
-  private salvarCarrinhoLocal() {
-    localStorage.setItem('carrinho', JSON.stringify(this.carrinho));
-  }
-
-  private carregarCarrinhoLocal() {
-    const carrinhoSalvo = localStorage.getItem('carrinho');
-    if (carrinhoSalvo) {
-      this.carrinho = JSON.parse(carrinhoSalvo);
-    }
-  }
-
-  // Métodos de API
+  // API de Categorias e Produtos
   async getCategorias(): Promise<any[]> {
     try {
       const response = await firstValueFrom(
@@ -91,13 +95,11 @@ export class ProdutosService {
 
   async getProdutos(categoriaId?: number): Promise<any[]> {
     try {
-      let url = categoriaId 
+      const url = categoriaId
         ? `${this.apiUrl}/categorias/${categoriaId}/produtos`
         : `${this.apiUrl}/produtos`;
-      
-      const response = await firstValueFrom(
-        this.http.get<any[]>(url)
-      );
+
+      const response = await firstValueFrom(this.http.get<any[]>(url));
       console.log(`Produtos obtidos (categoria ${categoriaId}):`, response);
       return response || [];
     } catch (error) {
@@ -119,21 +121,23 @@ export class ProdutosService {
     }
   }
 
-  async finalizarPedido(comandaId: string) {
+  async finalizarPedido(comandaId: number) {
     try {
-      if (!comandaId) {
-        throw new Error('Comanda ID não informado');
-      }
-
       console.log('Iniciando finalização do pedido para comanda:', comandaId);
-      console.log('Itens no carrinho:', this.carrinho);
+
+      const carrinho = await this.getCarrinho(comandaId); // Certifica-se de buscar o carrinho atualizado
+      console.log('Itens no carrinho:', carrinho);
+
+      if (carrinho.length === 0) {
+        throw new Error('Carrinho vazio.');
+      }
 
       const pedidoData = {
         comanda_id: comandaId,
-        itens: this.carrinho.map(item => ({
+        itens: carrinho.map((item) => ({
           produto_id: item.id,
-          quantidade: item.quantidade || 1
-        }))
+          quantidade: item.quantidade,
+        })),
       };
 
       console.log('Dados do pedido a serem enviados:', pedidoData);
@@ -141,10 +145,9 @@ export class ProdutosService {
       const response = await firstValueFrom(
         this.http.post(`${this.apiUrl}/finalizar-pedido`, pedidoData)
       );
-      
+
       console.log('Resposta da finalização do pedido:', response);
       this.limparCarrinho();
-      this.limparComandaAtual();
       return response;
     } catch (error) {
       console.error('Erro ao finalizar pedido:', error);

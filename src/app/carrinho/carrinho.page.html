@@ -17,8 +17,8 @@
         <p>Quantidade: {{ item.quantidade || 1 }}</p>
         <p>R$ {{ (item.preco * (item.quantidade || 1)).toFixed(2) }}</p>
       </ion-label>
-      <ion-button slot="end" color="danger" (click)="removerDoCarrinho(item)">
-        REMOVER
+      <ion-button color="danger" (click)="removerDoCarrinho(item)">
+        Remover
       </ion-button>
     </ion-item>
   </ion-list>

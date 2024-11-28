@@ -1,4 +1,3 @@
-// src/app/carrinho/carrinho.page.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProdutosService } from '../services/produtos.service';
@@ -20,66 +19,85 @@ export class CarrinhoPage {
     private navController: NavController
   ) {}
 
-  ionViewWillEnter() {
-    this.carregarDados();
+  async ionViewWillEnter() {
+    await this.carregarDados();
   }
 
-  carregarDados() {
-    this.itensCarrinho = this.produtosService.getCarrinho();
-    this.comandaAtual = this.produtosService.getComandaAtual();
-    console.log('Itens no carrinho:', this.itensCarrinho);
-    console.log('Comanda atual:', this.comandaAtual);
+  async carregarDados() {
+    try {
+      this.comandaAtual = this.produtosService.getComandaAtual();
+
+      if (!this.comandaAtual?.id) {
+        this.presentToast('Erro: Comanda não identificada.', 'danger');
+        return;
+      }
+
+      this.itensCarrinho = await this.produtosService.getCarrinho(this.comandaAtual.id);
+      console.log('Itens no carrinho:', this.itensCarrinho);
+    } catch (error) {
+      console.error('Erro ao carregar dados do carrinho:', error);
+      this.presentToast('Erro ao carregar carrinho.', 'danger');
+    }
   }
 
   calcularTotal(): number {
     return this.itensCarrinho.reduce((total, item) => {
-      return total + (item.preco * (item.quantidade || 1));
+      const preco = item.preco || 0; // Certifica que o preço existe
+      const quantidade = item.quantidade || 0; // Certifica que a quantidade existe
+      return total + preco * quantidade;
     }, 0);
   }
 
-  removerDoCarrinho(item: any) {
-    this.produtosService.removerDoCarrinho(item);
-    this.carregarDados();
-  }
-
-  async presentToast(message: string, color: string = 'light') {
-    const toast = await this.toastController.create({
-      message,
-      duration: 1000,
-      color: color, // Cor do toast
-      position: 'middle', // Centraliza o toast na tela
-      cssClass: 'custom-toast' // Classe CSS personalizada
+  // src/app/carrinho/carrinho.page.ts
+async removerDoCarrinho(item: any) {
+  try {
+    await this.produtosService.removerDoCarrinho({
+      comanda_id: this.comandaAtual.id,
+      produto_id: item.id,
     });
-    toast.present();
+    await this.carregarDados();
+    this.presentToast('Item removido com sucesso', 'success');
+  } catch (error) {
+    console.error('Erro ao remover item do carrinho:', error);
+    this.presentToast('Erro ao remover item.', 'danger');
   }
+}
 
   async finalizarPedido() {
     try {
       if (!this.comandaAtual?.id) {
-        this.presentToast("Erro: Comanda não identificada", 'danger');
+        this.presentToast('Erro: Comanda não identificada.', 'danger');
         return;
       }
 
       if (this.itensCarrinho.length === 0) {
-        this.presentToast("Erro: Carrinho vazio", 'danger');
+        this.presentToast('Erro: Carrinho vazio.', 'danger');
         return;
       }
 
       const response = await this.produtosService.finalizarPedido(this.comandaAtual.id);
       console.log('Pedido finalizado:', response);
-      
-      this.presentToast("Pedido finalizado com sucesso", 'success');
-      
+
+      this.presentToast('Pedido finalizado com sucesso!', 'success');
+
       // Redireciona para a home após 2 segundos
       setTimeout(() => {
         this.navController.navigateRoot('/tabs/home');
-      }, 1000);
+      }, 2000);
     } catch (error: any) {
       console.error('Erro ao finalizar pedido:', error);
-      this.presentToast(
-        "Erro ao finalizar pedido: " + (error.message || "Erro desconhecido"), 
-        'danger'
-      );
+      const errorMessage = (error as any)?.message || 'Erro desconhecido';
+      this.presentToast(`Erro ao finalizar pedido: ${errorMessage}`, 'danger');
     }
+  }
+
+  async presentToast(message: string, color: string = 'light') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 1500,
+      color: color,
+      position: 'middle',
+    });
+    await toast.present();
   }
 }
