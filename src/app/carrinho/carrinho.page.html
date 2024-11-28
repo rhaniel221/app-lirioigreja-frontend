@@ -1,29 +1,43 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Carrinho</ion-title>
+    <ion-title style="display: none;"></ion-title> <!-- Esconde o título -->
+    <div class="comanda-registrada" *ngIf="comandaAtual">
+      <ion-icon name="wallet-outline"></ion-icon>
+      Comanda: {{ comandaAtual.numero }}
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Exibe uma mensagem caso o carrinho esteja vazio -->
-  <div *ngIf="itensCarrinho.length === 0">
-    <p>Seu carrinho está vazio.</p>
-  </div>
-
   <ion-list>
     <ion-item *ngFor="let item of itensCarrinho">
       <ion-label>
         <h2>{{ item.nome }}</h2>
-        <p>Quantidade: {{ item.quantidade }}</p>
-        <p>Preço: R$ {{ item.preco | currency }}</p>
+        <p *ngIf="item.descricao">{{ item.descricao }}</p>
+        <p>Quantidade: {{ item.quantidade || 1 }}</p>
+        <p>R$ {{ (item.preco * (item.quantidade || 1)).toFixed(2) }}</p>
       </ion-label>
-      <ion-button color="danger" (click)="removerItemDoCarrinho(item)">Remover</ion-button>
+      <ion-button slot="end" color="danger" (click)="removerDoCarrinho(item)">
+        REMOVER
+      </ion-button>
     </ion-item>
   </ion-list>
 
-  <div class="total">
-    <p>Total: R$ {{ calcularTotal() | currency }}</p>
+  <div *ngIf="itensCarrinho.length > 0" class="ion-padding">
+    <p><strong>Total: R$ {{ calcularTotal().toFixed(2) }}</strong></p>
   </div>
 
-  <ion-button expand="full" (click)="finalizarPedido()">Finalizar Pedido</ion-button>
+  <!-- Botão de finalizar pedido com a nova classe 'finalizar-pedido' -->
+  <ion-button 
+  style="--background: #ffcc00 !important; --color: black !important; --border-radius: 20px !important; --box-shadow: none !important;"
+  expand="block"
+  class="ion-padding"
+  (click)="finalizarPedido()"
+  [disabled]="itensCarrinho.length === 0">
+  FINALIZAR PEDIDO
+</ion-button>
+
+  <div *ngIf="itensCarrinho.length === 0" class="ion-padding ion-text-center">
+    <p>Carrinho vazio</p>
+  </div>
 </ion-content>

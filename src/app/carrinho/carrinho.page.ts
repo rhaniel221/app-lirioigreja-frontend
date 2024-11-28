@@ -1,8 +1,8 @@
+// src/app/carrinho/carrinho.page.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProdutosService } from '../services/produtos.service';
 import { ToastController, NavController } from '@ionic/angular';
-import { firstValueFrom } from 'rxjs';  // Corrigido para importar
 
 @Component({
   selector: 'app-carrinho',
@@ -24,48 +24,31 @@ export class CarrinhoPage {
     this.carregarDados();
   }
 
-  async carregarDados() {
-    try {
-      this.comandaAtual = this.produtosService.getComandaAtual();
-      if (this.comandaAtual) {
-        this.itensCarrinho = await this.produtosService.getCarrinho(this.comandaAtual.id);
-      } else {
-        // Se a comanda não estiver disponível, exibe uma mensagem ou trata o erro
-        this.presentToast("Comanda não encontrada", 'danger');
-      }
-    } catch (error) {
-      console.error('Erro ao carregar dados do carrinho:', error);
-      this.presentToast("Erro ao carregar dados", 'danger');
-    }
-  }
-
-  async removerItemDoCarrinho(item: any) {
-    try {
-      const dados = {
-        comanda_id: this.comandaAtual.id,
-        produto_id: item.id,
-      };
-
-      // Removendo o item do carrinho via ProdutoService
-      await this.produtosService.removerItemDoCarrinho(dados);  // Corrigido para chamar 'removerItemDoCarrinho'
-      this.carregarDados(); // Recarrega os itens do carrinho após remoção
-      this.presentToast('Item removido do carrinho', 'success');
-    } catch (error) {
-      console.error('Erro ao remover item do carrinho:', error);
-      this.presentToast('Erro ao remover item do carrinho', 'danger');
-    }
+  carregarDados() {
+    this.itensCarrinho = this.produtosService.getCarrinho();
+    this.comandaAtual = this.produtosService.getComandaAtual();
+    console.log('Itens no carrinho:', this.itensCarrinho);
+    console.log('Comanda atual:', this.comandaAtual);
   }
 
   calcularTotal(): number {
-    return this.itensCarrinho.reduce((total, item) => total + item.preco * item.quantidade, 0);
+    return this.itensCarrinho.reduce((total, item) => {
+      return total + (item.preco * (item.quantidade || 1));
+    }, 0);
+  }
+
+  removerDoCarrinho(item: any) {
+    this.produtosService.removerDoCarrinho(item);
+    this.carregarDados();
   }
 
   async presentToast(message: string, color: string = 'light') {
     const toast = await this.toastController.create({
       message,
       duration: 1000,
-      color: color,
-      position: 'middle',
+      color: color, // Cor do toast
+      position: 'middle', // Centraliza o toast na tela
+      cssClass: 'custom-toast' // Classe CSS personalizada
     });
     toast.present();
   }
@@ -93,7 +76,10 @@ export class CarrinhoPage {
       }, 1000);
     } catch (error: any) {
       console.error('Erro ao finalizar pedido:', error);
-      this.presentToast("Erro ao finalizar pedido: " + (error.message || "Erro desconhecido"), 'danger');
+      this.presentToast(
+        "Erro ao finalizar pedido: " + (error.message || "Erro desconhecido"), 
+        'danger'
+      );
     }
   }
 }
