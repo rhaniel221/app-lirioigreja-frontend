@@ -40,10 +40,10 @@
         </p>
       </ion-label>
       <ion-button
+        class="adicionar-carrinho"
         slot="end"
         [disabled]="produto.quantidade_disponivel <= 0 || produto.isLoading"
         (click)="adicionarAoCarrinho(produto)"
-        [color]="produto.quantidade_disponivel > 0 ? 'primary' : 'medium'"
       >
         <ion-icon *ngIf="produto.isLoading" name="sync" slot="start"></ion-icon>
         {{ produto.quantidade_disponivel > 0 ? 'Adicionar' : 'Indisponível' }}

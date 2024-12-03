@@ -68,6 +68,7 @@
 /* Produtos */
 .produtos-container {
   padding: 10px;
+  margin-bottom: 80px; /* Espaço extra para evitar corte do último item */
 }
 
 ion-item {
@@ -102,18 +103,25 @@ ion-item p.indisponivel {
 }
 
 /* Botão Adicionar */
-ion-button {
+ion-button.adicionar-carrinho {
   --background: #ffcc00; /* Fundo amarelo */
   --color: black; /* Texto preto */
-  border-radius: 10px; /* Bordas arredondadas */
+  --border-radius: 10px; /* Bordas arredondadas */
+  --font-weight: bold; /* Texto negrito */
 }
 
-ion-button[disabled] {
+ion-button.adicionar-carrinho[disabled] {
   --background: #d3d3d3; /* Cinza para desabilitado */
   --color: #888;
 }
 
 /* Hover no Botão */
-ion-button:hover {
+ion-button.adicionar-carrinho:hover {
   --background: #f1a800; /* Amarelo mais escuro */
+  --color: black; /* Garante que o texto continue preto */
+}
+
+/* Certifique-se de que o último item seja visível */
+ion-content {
+  padding-bottom: 100px; /* Espaço extra no final */
 }
