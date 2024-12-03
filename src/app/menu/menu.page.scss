@@ -1,104 +1,119 @@
-/* Estilo do cabeçalho da comanda */
+/* Estilo do Cabeçalho da Comanda */
 .comanda-registrada {
-    background-color: #292929;
-    color: white;
-    font-size: 13px;
-    padding: 8px 10px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  
-  /* Container das Categorias */
-  .categorias-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    overflow-x: auto;
-    scrollbar-width: none; /* Oculta a barra de rolagem no desktop */
-  }
-  
-  .categorias-container::-webkit-scrollbar {
-    display: none; /* Oculta a barra de rolagem no navegador */
-  }
-  
-  /* Estilo de cada cartão de categoria */
-  .categoria-card {
-    background-color: #292929;
-    border-radius: 12px;
-    padding: 10px 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease, background-color 0.2s ease;
-    min-width: 70px; /* Define largura mínima */
-    cursor: pointer;
-  }
-  
-  /* Quando a categoria está selecionada */
-  .categoria-card.selected {
-    background-color: #ffcc00;
-    color: black;
-    transform: scale(1.1);
-    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
-  }
-  
-  /* Ícones das categorias */
-  .categoria-card ion-icon {
-    font-size: 24px;
-  }
-  
-  /* Produtos */
-  .produtos-container {
-    margin: 10px;
-  }
-  
-  ion-item {
-    --background: #222;
-    border-radius: 12px;
-    margin: 10px 0;
-    padding: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  }
-  
-  ion-item h2 {
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: capitalize;
-  }
-  
-  ion-item p {
-    font-size: 12px;
-    color: #aaa;
-  }
-  
-  ion-item p.disponivel {
-    color: green;
-  }
-  
-  ion-item p.pouco-estoque {
-    color: orange;
-  }
-  
-  ion-item p.indisponivel {
-    color: red;
-    font-weight: bold;
-  }
-  
-  ion-button {
-    --background: #ffcc00;
-    --color: black;
-    border-radius: 10px;
-  }
-  
+  background-color: #dda200; /* Fundo amarelo */
+  color: white; /* Cor do texto */
+  font-weight: bold; /* Texto em negrito */
+  padding: 9px 8px; /* Espaçamento interno */
+  border-radius: 20px; /* Bordas arredondadas */
+  font-size: 14px; /* Tamanho da fonte */
+  display: flex; /* Flexbox */
+  align-items: center; /* Alinhamento vertical */
+  justify-content: center; /* Alinhamento horizontal */
+  gap: 8px; /* Espaço entre ícone e texto */
+  max-width: 300px; /* Largura máxima */
+  margin: 10px auto; /* Centraliza horizontalmente */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+/* Ajuste do Ícone da Comanda */
+.comanda-registrada ion-icon {
+  font-size: 18px; /* Tamanho do ícone */
+}
+
+/* Categorias com Ícones em Cima */
+.categorias-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  overflow-x: auto; /* Rolagem horizontal */
+  scrollbar-width: none; /* Oculta a barra de rolagem no desktop */
+}
+
+.categorias-container::-webkit-scrollbar {
+  display: none; /* Oculta a barra de rolagem no navegador */
+}
+
+/* Cartões das Categorias */
+.categoria-card {
+  background-color: #292929; /* Fundo escuro */
+  color: white; /* Texto branco */
+  border-radius: 12px; /* Bordas arredondadas */
+  padding: 8px 15px; /* Espaçamento interno */
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Ícones acima do texto */
+  align-items: center;
+  justify-content: center;
+  font-size: 14px; /* Tamanho da fonte */
+  font-weight: 500; /* Peso da fonte */
+  text-align: center; /* Centraliza o texto */
+  cursor: pointer; /* Muda o cursor para "pointer" */
+  transition: transform 0.2s ease-in-out; /* Animação suave */
+  min-width: 80px; /* Largura mínima */
+}
+
+.categoria-card.selected {
+  background-color: #ffcc00; /* Fundo amarelo */
+  color: black; /* Texto preto */
+  transform: scale(1.1); /* Aumenta levemente ao ser selecionado */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Sombra */
+}
+
+/* Ícones das Categorias */
+.categoria-card ion-icon {
+  font-size: 24px; /* Tamanho dos ícones */
+  margin-bottom: 5px; /* Espaçamento abaixo do ícone */
+}
+
+/* Produtos */
+.produtos-container {
+  padding: 10px;
+}
+
+ion-item {
+  background-color: #222; /* Fundo escuro */
+  border-radius: 12px; /* Bordas arredondadas */
+  margin: 10px 0;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+ion-item h2 {
+  font-size: 14px; /* Tamanho do título */
+  font-weight: bold; /* Negrito */
+}
+
+ion-item p {
+  font-size: 12px;
+  color: #aaa; /* Cinza claro */
+}
+
+ion-item p.disponivel {
+  color: green; /* Verde para disponível */
+}
+
+ion-item p.pouco-estoque {
+  color: orange; /* Laranja para pouco estoque */
+}
+
+ion-item p.indisponivel {
+  color: red; /* Vermelho para indisponível */
+  font-weight: bold;
+}
+
+/* Botão Adicionar */
+ion-button {
+  --background: #ffcc00; /* Fundo amarelo */
+  --color: black; /* Texto preto */
+  border-radius: 10px; /* Bordas arredondadas */
+}
+
+ion-button[disabled] {
+  --background: #d3d3d3; /* Cinza para desabilitado */
+  --color: #888;
+}
+
+/* Hover no Botão */
+ion-button:hover {
+  --background: #f1a800; /* Amarelo mais escuro */
+}

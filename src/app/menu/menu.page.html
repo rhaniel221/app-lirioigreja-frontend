@@ -1,5 +1,6 @@
 <ion-header>
   <ion-toolbar>
+    <!-- Comanda Centralizada -->
     <div class="comanda-registrada" *ngIf="comandaAtual">
       <ion-icon name="wallet-outline"></ion-icon>
       Comanda: {{ comandaAtual.numero }}
@@ -8,25 +9,25 @@
 </ion-header>
 
 <ion-content>
-  <!-- Categorias -->
+  <!-- Categorias com Ícones em Cima -->
   <div class="categorias-container">
     <div
       class="categoria-card"
       *ngFor="let categoria of categorias"
       [class.selected]="categoria.id === categoriaSelecionada"
-      (click)="onCategoriaClicada(categoria)"
+      (click)="onCategoriaSelecionada(categoria)"
     >
       <ion-icon [name]="getIconForCategoria(categoria.nome)"></ion-icon>
       <span>{{ categoria.nome }}</span>
     </div>
   </div>
 
-  <!-- Produtos -->
+  <!-- Produtos por Categoria -->
   <div class="produtos-container">
-    <ion-item *ngFor="let produto of produtos">
+    <ion-item *ngFor="let produto of produtosPorCategoria[categoriaSelecionada]">
       <ion-label>
         <h2>{{ produto.nome }}</h2>
-        <p>{{ produto.descricao }}</p>
+        <p *ngIf="produto.descricao">{{ produto.descricao }}</p>
         <p>R$ {{ produto.preco.toFixed(2) }}</p>
         <p [ngClass]="{
           'disponivel': produto.quantidade_disponivel > 15,
@@ -40,10 +41,11 @@
       </ion-label>
       <ion-button
         slot="end"
-        [disabled]="produto.quantidade_disponivel <= 0"
+        [disabled]="produto.quantidade_disponivel <= 0 || produto.isLoading"
         (click)="adicionarAoCarrinho(produto)"
+        [color]="produto.quantidade_disponivel > 0 ? 'primary' : 'medium'"
       >
-        <ion-icon slot="start" name="cart-outline"></ion-icon>
+        <ion-icon *ngIf="produto.isLoading" name="sync" slot="start"></ion-icon>
         {{ produto.quantidade_disponivel > 0 ? 'Adicionar' : 'Indisponível' }}
       </ion-button>
     </ion-item>
