@@ -8,48 +8,44 @@
 </ion-header>
 
 <ion-content>
-  <!-- Carrinho -->
-  <div *ngIf="itensCarrinho.length > 0" class="carrinho-container">
-    <ion-list>
-      <ion-item *ngFor="let item of itensCarrinho">
-        <ion-label>
-          <h2>{{ item.nome }}</h2>
-          <p>R$ {{ item.preco.toFixed(2) }} x {{ item.quantidade }}</p>
-          <p>Total: R$ {{ (item.preco * item.quantidade).toFixed(2) }}</p>
-        </ion-label>
-        <ion-button 
-          slot="end" 
-          color="danger"
-          (click)="removerDoCarrinho(item)">
-          REMOVER
-        </ion-button>
-        <ion-button 
-          slot="end"
-          color="primary"
-          (click)="atualizarQuantidade(item, 1)">
-          +
-        </ion-button>
-        <ion-button 
-          slot="end" 
-          color="primary"
-          (click)="atualizarQuantidade(item, -1)">
-          -
-        </ion-button>
-      </ion-item>
-    </ion-list>
+  <!-- Categorias -->
+  <div class="categorias-container">
+    <div
+      class="categoria-card"
+      *ngFor="let categoria of categorias"
+      [class.selected]="categoria.id === categoriaSelecionada"
+      (click)="onCategoriaClicada(categoria)"
+    >
+      <ion-icon [name]="getIconForCategoria(categoria.nome)"></ion-icon>
+      <span>{{ categoria.nome }}</span>
+    </div>
   </div>
 
-  <!-- Mensagem para carrinho vazio -->
-  <div *ngIf="itensCarrinho.length === 0" class="ion-padding ion-text-center">
-    <p>Carrinho vazio</p>
+  <!-- Produtos -->
+  <div class="produtos-container">
+    <ion-item *ngFor="let produto of produtos">
+      <ion-label>
+        <h2>{{ produto.nome }}</h2>
+        <p>{{ produto.descricao }}</p>
+        <p>R$ {{ produto.preco.toFixed(2) }}</p>
+        <p [ngClass]="{
+          'disponivel': produto.quantidade_disponivel > 15,
+          'pouco-estoque': produto.quantidade_disponivel > 0 && produto.quantidade_disponivel <= 15,
+          'indisponivel': produto.quantidade_disponivel <= 0
+        }">
+          {{ produto.quantidade_disponivel > 0 ? 
+             'Disponível: ' + produto.quantidade_disponivel : 
+             'Indisponível' }}
+        </p>
+      </ion-label>
+      <ion-button
+        slot="end"
+        [disabled]="produto.quantidade_disponivel <= 0"
+        (click)="adicionarAoCarrinho(produto)"
+      >
+        <ion-icon slot="start" name="cart-outline"></ion-icon>
+        {{ produto.quantidade_disponivel > 0 ? 'Adicionar' : 'Indisponível' }}
+      </ion-button>
+    </ion-item>
   </div>
-
-  <!-- Botão de finalizar pedido -->
-  <ion-button 
-    *ngIf="itensCarrinho.length > 0" 
-    class="finalizar-pedido" 
-    expand="full"
-    (click)="finalizarPedido()">
-    FINALIZAR PEDIDO
-  </ion-button>
 </ion-content>
